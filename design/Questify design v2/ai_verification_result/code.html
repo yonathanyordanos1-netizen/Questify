@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Questify - Verification Result</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-container": "#5f1900",
+                    "on-primary-fixed": "#390c00",
+                    "outline": "#8d7168",
+                    "tertiary": "#515f74",
+                    "on-secondary": "#ffffff",
+                    "primary-fixed-dim": "#ffb59d",
+                    "surface-container": "#eceef1",
+                    "on-tertiary-container": "#243245",
+                    "surface-container-high": "#e6e8eb",
+                    "outline-variant": "#e1bfb5",
+                    "surface-tint": "#ab3500",
+                    "on-tertiary": "#ffffff",
+                    "inverse-on-surface": "#eff1f4",
+                    "tertiary-fixed-dim": "#b9c7df",
+                    "tertiary-fixed": "#d5e3fc",
+                    "surface-container-highest": "#e0e3e6",
+                    "secondary": "#565e74",
+                    "on-error": "#ffffff",
+                    "on-surface": "#191c1e",
+                    "inverse-primary": "#ffb59d",
+                    "on-secondary-fixed": "#131b2e",
+                    "on-error-container": "#93000a",
+                    "tertiary-container": "#8c9ab1",
+                    "on-primary-fixed-variant": "#832600",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "primary-container": "#ff6b35",
+                    "secondary-container": "#dae2fd",
+                    "error-container": "#ffdad6",
+                    "surface-container-low": "#f2f4f7",
+                    "on-surface-variant": "#594139",
+                    "surface-variant": "#e0e3e6",
+                    "secondary-fixed-dim": "#bec6e0",
+                    "error": "#ba1a1a",
+                    "primary": "#ab3500",
+                    "on-tertiary-fixed": "#0d1c2e",
+                    "on-primary": "#ffffff",
+                    "surface-dim": "#d8dadd",
+                    "on-tertiary-fixed-variant": "#3a485b",
+                    "background": "#f4f6f9",
+                    "surface-bright": "#f7f9fc",
+                    "surface-container-lowest": "#ffffff",
+                    "on-background": "#191c1e",
+                    "primary-fixed": "#ffdbd0",
+                    "on-secondary-container": "#5c647a",
+                    "inverse-surface": "#2d3133",
+                    "surface": "#ffffff",
+                    "secondary-fixed": "#dae2fd"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "2xl": "1.5rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xs": "8px",
+                    "xl": "64px",
+                    "container-max": "1200px",
+                    "base": "4px",
+                    "gutter": "16px",
+                    "md": "24px",
+                    "margin-mobile": "20px",
+                    "lg": "40px",
+                    "sm": "16px"
+            },
+            "fontFamily": {
+                    "headline-md": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "display": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "button": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "headline-lg-mobile": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "body-md": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "body-lg": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "label-bold": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "headline-lg": [
+                            "Plus Jakarta Sans"
+                    ]
+            },
+            "fontSize": {
+                    "headline-md": [
+                            "24px",
+                            {
+                                    "lineHeight": "1.3",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "display": [
+                            "48px",
+                            {
+                                    "lineHeight": "1.1",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "800"
+                            }
+                    ],
+                    "button": [
+                            "16px",
+                            {
+                                    "lineHeight": "1",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "headline-lg-mobile": [
+                            "24px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "fontWeight": "800"
+                            }
+                    ],
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "1.6",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "1.6",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "label-bold": [
+                            "14px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "letterSpacing": "0.02em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "headline-lg": [
+                            "32px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "letterSpacing": "-0.01em",
+                                    "fontWeight": "800"
+                            }
+                    ]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes scaleIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes progressFill {
+            from { width: 0%; }
+            to { width: 80%; }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .animate-slide-up {
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .animate-scale-in {
+            animation: scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .animate-progress {
+            animation: progressFill 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 0.5s;
+        }
+
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        /* Particle effects */
+        .particle {
+            position: absolute;
+            pointer-events: none;
+            opacity: 0;
+            animation: particleAnimation 1s ease-out forwards;
+        }
+        
+        @keyframes particleAnimation {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen flex flex-col items-center justify-center font-body-md overflow-hidden antialiased">
+<!-- Confetti Canvas -->
+<canvas class="fixed inset-0 pointer-events-none z-0" id="confetti"></canvas>
+<!-- Main Content Container -->
+<div class="relative z-10 w-full max-w-[400px] px-margin-mobile flex flex-col items-center justify-center min-h-[100dvh]">
+<!-- Verification Header -->
+<div class="animate-scale-in flex flex-col items-center mb-8">
+<div class="w-24 h-24 bg-primary-container rounded-full flex items-center justify-center mb-4 shadow-[0px_8px_30px_rgba(255,107,53,0.3)] relative">
+<div class="absolute inset-0 bg-primary-container rounded-full animate-ping opacity-20"></div>
+<span class="material-symbols-outlined text-on-primary-container text-[48px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<h1 class="text-headline-lg-mobile font-headline-lg-mobile text-primary text-center">✓ VERIFIED</h1>
+<p class="text-body-lg font-body-lg text-on-surface-variant mt-2 text-center">AI confirmed your proof.</p>
+<h2 class="text-headline-md font-headline-md text-on-surface mt-1 text-center">Morning Workout</h2>
+</div>
+<!-- XP Reward Card -->
+<div class="animate-slide-up bg-surface w-full rounded-2xl shadow-[0px_4px_20px_rgba(15,23,42,0.05)] p-md flex flex-col items-center mb-8 relative overflow-hidden" style="animation-delay: 0.2s; opacity: 0;">
+<!-- decorative background elements -->
+<div class="absolute -top-10 -right-10 w-32 h-32 bg-primary-container opacity-10 rounded-full blur-2xl"></div>
+<div class="absolute -bottom-10 -left-10 w-32 h-32 bg-tertiary-container opacity-10 rounded-full blur-2xl"></div>
+<div class="text-primary-container font-headline-lg font-headline-lg text-[40px] mb-2 drop-shadow-md">
+                +135 XP
+            </div>
+<div class="text-label-bold font-label-bold text-primary bg-primary-fixed px-3 py-1 rounded-full mb-6 uppercase tracking-wider">
+                Bonus Included
+            </div>
+<!-- Level Progress -->
+<div class="w-full mb-2">
+<div class="flex justify-between items-end mb-2">
+<span class="text-label-bold font-label-bold text-on-surface-variant">Level 8</span>
+<span class="text-label-bold font-label-bold text-on-surface-variant opacity-50">Level 9</span>
+</div>
+<div class="h-2 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full w-0 animate-progress relative">
+<div class="absolute top-0 right-0 bottom-0 left-0 bg-gradient-to-r from-transparent to-white opacity-30"></div>
+</div>
+</div>
+</div>
+<div class="text-xs text-on-surface-variant font-body-md self-start">450 / 500 XP to Next Level</div>
+</div>
+<!-- QUBI Mascot -->
+<div class="animate-float mb-12">
+<img alt="" class="w-32 h-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqO4_5q9NEzNwN-_3W99prh48Tw5rOEzsXhvAnryS7fyAXWlXZHOuaqFX5IxwDwQtCIZtUuMm9sVdZrYoi5a0bw3MwxV-4qrHNfd5CyYIxSZb34M8A-q8yhSdTJI0ywk2dcOp01iMdnxFuTSCQTASUZBKLpxy-jBedJ6QlDp-mATLE1U6BIw7kFU_KZTHlfiJE_0-S77MhAL3fJ2a8C0O9Y0s2VLPb4ufBNoEOv0fKhNWekb5pnLCKwCWBrEsstV3E43g"/>
+</div>
+<!-- Action Button -->
+<div class="w-full mt-auto mb-8 animate-slide-up" style="animation-delay: 0.6s; opacity: 0;">
+<button class="w-full bg-primary-container text-on-primary-container text-button font-button py-4 rounded-[16px] shadow-[0px_8px_20px_rgba(255,107,53,0.2)] hover:scale-[1.02] active:scale-95 transition-transform duration-200 ease-out flex items-center justify-center gap-2">
+                CONTINUE
+                <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Scripts for interactivity and effects -->
+<script>
+        // Simple Confetti effect
+        const canvas = document.getElementById('confetti');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const pieces = [];
+        const colors = ['#ff6b35', '#ffb59d', '#8c9ab1', '#dae2fd'];
+
+        for (let i = 0; i < 50; i++) {
+            pieces.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height - canvas.height,
+                w: Math.random() * 10 + 5,
+                h: Math.random() * 5 + 5,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                speed: Math.random() * 3 + 2,
+                angle: Math.random() * 360,
+                spin: Math.random() * 0.2 - 0.1
+            });
+        }
+
+        function animateConfetti() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            let active = false;
+            pieces.forEach(p => {
+                p.y += p.speed;
+                p.angle += p.spin;
+                if (p.y < canvas.height) active = true;
+
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate(p.angle);
+                ctx.fillStyle = p.color;
+                ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+                ctx.restore();
+            });
+
+            if (active) {
+                requestAnimationFrame(animateConfetti);
+            }
+        }
+        
+        // Start confetti after a short delay
+        setTimeout(() => {
+            requestAnimationFrame(animateConfetti);
+        }, 300);
+
+        // Resize handler for canvas
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body></html>

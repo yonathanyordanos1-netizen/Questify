@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Questify - Profile &amp; Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-container": "#5f1900",
+                        "on-primary-fixed": "#390c00",
+                        "outline": "#8d7168",
+                        "tertiary": "#515f74",
+                        "on-secondary": "#ffffff",
+                        "primary-fixed-dim": "#ffb59d",
+                        "surface-container": "#eceef1",
+                        "on-tertiary-container": "#243245",
+                        "surface-container-high": "#e6e8eb",
+                        "outline-variant": "#e1bfb5",
+                        "surface-tint": "#ab3500",
+                        "on-tertiary": "#ffffff",
+                        "inverse-on-surface": "#eff1f4",
+                        "tertiary-fixed-dim": "#b9c7df",
+                        "tertiary-fixed": "#d5e3fc",
+                        "surface-container-highest": "#e0e3e6",
+                        "secondary": "#565e74",
+                        "on-error": "#ffffff",
+                        "on-surface": "#191c1e",
+                        "inverse-primary": "#ffb59d",
+                        "on-secondary-fixed": "#131b2e",
+                        "on-error-container": "#93000a",
+                        "tertiary-container": "#8c9ab1",
+                        "on-primary-fixed-variant": "#832600",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "primary-container": "#ff6b35",
+                        "secondary-container": "#dae2fd",
+                        "error-container": "#ffdad6",
+                        "surface-container-low": "#f2f4f7",
+                        "on-surface-variant": "#594139",
+                        "surface-variant": "#e0e3e6",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "error": "#ba1a1a",
+                        "primary": "#ab3500",
+                        "on-tertiary-fixed": "#0d1c2e",
+                        "on-primary": "#ffffff",
+                        "surface-dim": "#d8dadd",
+                        "on-tertiary-fixed-variant": "#3a485b",
+                        "background": "#f7f9fc",
+                        "surface-bright": "#f7f9fc",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#191c1e",
+                        "primary-fixed": "#ffdbd0",
+                        "on-secondary-container": "#5c647a",
+                        "inverse-surface": "#2d3133",
+                        "surface": "#f7f9fc",
+                        "secondary-fixed": "#dae2fd"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "8px",
+                        "xl": "64px",
+                        "container-max": "1200px",
+                        "base": "4px",
+                        "gutter": "16px",
+                        "md": "24px",
+                        "margin-mobile": "20px",
+                        "lg": "40px",
+                        "sm": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "display": ["Plus Jakarta Sans"],
+                        "button": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "label-bold": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "700" }],
+                        "display": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "button": ["16px", { "lineHeight": "1", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "fontWeight": "800" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-bold": ["14px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "800" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background antialiased min-h-screen flex flex-col pb-24">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center w-full px-margin-mobile h-16 bg-background dark:bg-background docked full-width top-0 z-40 fixed">
+<div class="flex items-center gap-xs text-primary dark:text-primary-fixed-dim">
+<span class="text-headline-md font-headline-md font-extrabold tracking-tight">Questify</span>
+</div>
+<div class="flex items-center">
+<button aria-label="Notifications" class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined" data-icon="notifications" style="font-variation-settings: 'FILL' 0;">notifications</span>
+</button>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="flex-grow w-full max-w-container-max mx-auto px-margin-mobile pt-20 flex flex-col gap-lg md:px-gutter">
+<!-- Profile Header Bento -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-sm md:gap-gutter">
+<!-- Main Avatar Card -->
+<div class="bg-surface-container-lowest rounded-[24px] p-md shadow-[0px_4px_20px_rgba(15,23,42,0.05)] col-span-1 md:col-span-2 flex flex-col sm:flex-row items-center sm:items-start gap-sm relative overflow-hidden">
+<div class="absolute -top-10 -right-10 w-32 h-32 bg-primary-container opacity-10 rounded-full blur-2xl"></div>
+<div class="relative w-24 h-24 rounded-full overflow-hidden border-4 border-surface-container-lowest shadow-sm flex-shrink-0">
+<img class="object-cover w-full h-full" data-alt="A highly stylized, modern digital portrait avatar of a confident user, vibrant colors, flat design but with subtle gradient shading, energetic expression. Set against a clean white background, the aesthetic aligns with a modern gamified productivity app." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIF1S3OJ6c0QOC-OyVUx79dD6YxA5xcMaON0mohKxV5AioZZr1w8O5Sco54XUoojSvHQKNtlUJe6i8lr8L9Of7eBfFiJx0TgsohEvNas54NA0TOUh9f765iljVhGPEly_ugjCLvftDVlRh78KNb1MyRcwGwN9iOy7hFg4i_lrt5biA0dfVWMVd8VFIs60Vm9MZjxOvUWhfO2g-wqs25bq_uypHghlwdexlhJpmDrgcH466Q_syiXwSdg"/>
+</div>
+<div class="flex flex-col flex-grow text-center sm:text-left mt-2 sm:mt-0">
+<h1 class="text-headline-lg-mobile font-headline-lg-mobile md:text-headline-lg md:font-headline-lg text-on-surface">Alex Rivera</h1>
+<span class="text-body-md font-body-md text-on-surface-variant">@alex_q</span>
+<div class="flex flex-wrap justify-center sm:justify-start gap-xs mt-4">
+<div class="bg-primary-container bg-opacity-10 text-on-primary-container px-3 py-1 rounded-xl text-label-bold font-label-bold flex items-center gap-1 border border-primary-container border-opacity-20">
+<span class="material-symbols-outlined text-[16px]" data-icon="military_tech" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+                            Level 8
+                        </div>
+<div class="bg-tertiary-fixed-dim bg-opacity-20 text-on-tertiary-container px-3 py-1 rounded-xl text-label-bold font-label-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="emoji_events" style="font-variation-settings: 'FILL' 1;">emoji_events</span>
+                            Gold League
+                        </div>
+</div>
+</div>
+</div>
+<!-- XP Stats Card -->
+<div class="bg-surface-container-lowest rounded-[24px] p-md shadow-[0px_4px_20px_rgba(15,23,42,0.05)] flex flex-col justify-center relative overflow-hidden">
+<div class="flex items-center gap-2 mb-2 z-10 relative">
+<span class="material-symbols-outlined text-primary-container" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<h2 class="text-body-md font-body-md text-on-surface-variant font-semibold uppercase tracking-wider text-xs">Total XP</h2>
+</div>
+<div class="text-display font-display text-primary z-10 relative">
+                     12.4k
+                 </div>
+<div class="mt-4 z-10 relative">
+<div class="w-full h-2 bg-on-surface-variant bg-opacity-10 rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 75%;"></div>
+</div>
+<div class="text-xs text-on-surface-variant mt-1 text-right">3.6k to next rank</div>
+</div>
+</div>
+</section>
+<!-- Settings List -->
+<section class="flex flex-col gap-xs pb-lg">
+<h3 class="text-label-bold font-label-bold text-on-surface-variant uppercase tracking-widest pl-2 mb-2">Account Settings</h3>
+<a class="bg-surface-container-lowest rounded-[24px] p-sm flex items-center justify-between shadow-[0px_4px_20px_rgba(15,23,42,0.05)] hover:scale-[1.01] transition-transform duration-200 group" href="#">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center text-on-surface-variant group-hover:bg-primary-container group-hover:text-on-primary-container transition-colors">
+<span class="material-symbols-outlined" data-icon="manage_accounts">manage_accounts</span>
+</div>
+<span class="text-body-md font-body-md font-semibold text-on-surface">Account</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant opacity-50 group-hover:opacity-100" data-icon="chevron_right">chevron_right</span>
+</a>
+<a class="bg-surface-container-lowest rounded-[24px] p-sm flex items-center justify-between shadow-[0px_4px_20px_rgba(15,23,42,0.05)] hover:scale-[1.01] transition-transform duration-200 group" href="#">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center text-on-surface-variant group-hover:bg-primary-container group-hover:text-on-primary-container transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications_active">notifications_active</span>
+</div>
+<span class="text-body-md font-body-md font-semibold text-on-surface">Notifications</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant opacity-50 group-hover:opacity-100" data-icon="chevron_right">chevron_right</span>
+</a>
+<h3 class="text-label-bold font-label-bold text-on-surface-variant uppercase tracking-widest pl-2 mt-6 mb-2">Preferences</h3>
+<a class="bg-surface-container-lowest rounded-[24px] p-sm flex items-center justify-between shadow-[0px_4px_20px_rgba(15,23,42,0.05)] hover:scale-[1.01] transition-transform duration-200 group" href="#">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center text-on-surface-variant group-hover:bg-primary-container group-hover:text-on-primary-container transition-colors relative">
+<span class="material-symbols-outlined" data-icon="smart_toy">smart_toy</span>
+<div class="absolute -top-1 -right-1 w-3 h-3 bg-primary-container rounded-full border-2 border-surface-container-lowest"></div>
+</div>
+<span class="text-body-md font-body-md font-semibold text-on-surface">AI Mascot</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant opacity-50 group-hover:opacity-100" data-icon="chevron_right">chevron_right</span>
+</a>
+<a class="bg-surface-container-lowest rounded-[24px] p-sm flex items-center justify-between shadow-[0px_4px_20px_rgba(15,23,42,0.05)] hover:scale-[1.01] transition-transform duration-200 group" href="#">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center text-on-surface-variant group-hover:bg-primary-container group-hover:text-on-primary-container transition-colors">
+<span class="material-symbols-outlined" data-icon="flag">flag</span>
+</div>
+<span class="text-body-md font-body-md font-semibold text-on-surface">Goals</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant opacity-50 group-hover:opacity-100" data-icon="chevron_right">chevron_right</span>
+</a>
+<a class="bg-surface-container-lowest rounded-[24px] p-sm flex items-center justify-between shadow-[0px_4px_20px_rgba(15,23,42,0.05)] hover:scale-[1.01] transition-transform duration-200 group" href="#">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center text-on-surface-variant group-hover:bg-primary-container group-hover:text-on-primary-container transition-colors">
+<span class="material-symbols-outlined" data-icon="verified">verified</span>
+</div>
+<span class="text-body-md font-body-md font-semibold text-on-surface">Proof Preferences</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant opacity-50 group-hover:opacity-100" data-icon="chevron_right">chevron_right</span>
+</a>
+<a class="bg-surface-container-lowest rounded-[24px] p-sm flex items-center justify-between shadow-[0px_4px_20px_rgba(15,23,42,0.05)] hover:scale-[1.01] transition-transform duration-200 group" href="#">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center text-on-surface-variant group-hover:bg-primary-container group-hover:text-on-primary-container transition-colors">
+<span class="material-symbols-outlined" data-icon="palette">palette</span>
+</div>
+<span class="text-body-md font-body-md font-semibold text-on-surface">Appearance</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant opacity-50 group-hover:opacity-100" data-icon="chevron_right">chevron_right</span>
+</a>
+<h3 class="text-label-bold font-label-bold text-on-surface-variant uppercase tracking-widest pl-2 mt-6 mb-2">Security</h3>
+<a class="bg-surface-container-lowest rounded-[24px] p-sm flex items-center justify-between shadow-[0px_4px_20px_rgba(15,23,42,0.05)] hover:scale-[1.01] transition-transform duration-200 group" href="#">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center text-on-surface-variant group-hover:bg-primary-container group-hover:text-on-primary-container transition-colors">
+<span class="material-symbols-outlined" data-icon="lock">lock</span>
+</div>
+<span class="text-body-md font-body-md font-semibold text-on-surface">Privacy</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant opacity-50 group-hover:opacity-100" data-icon="chevron_right">chevron_right</span>
+</a>
+<!-- Sign Out Button -->
+<button class="mt-8 bg-error-container bg-opacity-20 text-error rounded-2xl p-sm flex items-center justify-center gap-2 hover:bg-opacity-30 transition-colors w-full md:w-auto md:mx-auto md:min-w-[200px]">
+<span class="material-symbols-outlined text-[20px]" data-icon="logout">logout</span>
+<span class="text-button font-button">Sign Out</span>
+</button>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 bg-surface-container-lowest dark:bg-surface-container shadow-[0px_-4px_20px_rgba(15,23,42,0.05)] rounded-t-xl md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline px-3 py-1 hover:bg-surface-container-high dark:hover:bg-surface-variant rounded-xl transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform" data-icon="home">home</span>
+<span class="text-label-bold font-label-bold text-[10px] mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline px-3 py-1 hover:bg-surface-container-high dark:hover:bg-surface-variant rounded-xl transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform" data-icon="calendar_today">calendar_today</span>
+<span class="text-label-bold font-label-bold text-[10px] mt-1">Plan</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline px-3 py-1 hover:bg-surface-container-high dark:hover:bg-surface-variant rounded-xl transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform" data-icon="leaderboard">leaderboard</span>
+<span class="text-label-bold font-label-bold text-[10px] mt-1">League</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline px-3 py-1 hover:bg-surface-container-high dark:hover:bg-surface-variant rounded-xl transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform" data-icon="account_tree">account_tree</span>
+<span class="text-label-bold font-label-bold text-[10px] mt-1">Skills</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container dark:bg-on-primary-fixed-variant text-on-primary-container dark:text-primary-fixed rounded-xl px-3 py-1 scale-105 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="person" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="text-label-bold font-label-bold text-[10px] mt-1">Profile</span>
+</a>
+</nav>
+</body></html>

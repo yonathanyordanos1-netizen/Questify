@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Questify — League Rankings</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --coral:#FF6B35;
+    --coral-deep:#E2551F;
+    --peach:#F2F2F3;
+    --sage:#6B7280;
+    --periwinkle:#9AA0A6;
+    --canvas:#FAFAFA;
+    --ink:#1A1B1E;
+    --muted:#6B7280;
+    --card-border:#E7E7E8;
+    --white:#FFFFFF;
+    --display:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:var(--display);
+    background:#ECECED;
+    min-height:100vh;
+    display:grid;
+    place-items:center;
+    gap:18px;
+    padding:24px;
+  }
+  .stage-label{
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:#6B7280;
+    text-align:center;
+    margin-top:-8px;
+  }
+  .phone{
+    width:390px;
+    height:844px;
+    background:#1A1A1B;
+    border-radius:54px;
+    padding:10px;
+    box-shadow:0 34px 70px rgba(26,27,30,.28),0 6px 16px rgba(26,27,30,.10);
+    position:relative;
+  }
+  .screen{
+    width:100%;
+    height:100%;
+    border-radius:46px;
+    overflow:hidden;
+    background:var(--canvas);
+    display:flex;
+    flex-direction:column;
+    position:relative;
+  }
+  .island{
+    position:absolute;
+    top:20px;
+    left:50%;
+    transform:translateX(-50%);
+    width:126px;
+    height:34px;
+    background:#000;
+    border-radius:20px;
+    z-index:6;
+  }
+  .statusbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 28px 0;
+    color:var(--ink);
+    z-index:5;
+  }
+  .statusbar .time{font-size:15px;font-weight:700;letter-spacing:.02em}
+  .status-icons{display:flex;align-items:center;gap:6px}
+  .status-icons svg{display:block}
+  .rk-body{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    padding:16px 20px 96px;
+    overflow:hidden;
+  }
+  .rk-title{font-size:22px;font-weight:800;letter-spacing:-.02em;color:var(--ink);margin-bottom:12px}
+  .tier-banner{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    background:#F4F4F5;
+    border:1px solid rgba(26,27,30,.08);
+    border-radius:18px;
+    padding:14px 16px;
+    margin-bottom:14px;
+  }
+  .tier-ic{
+    width:42px;
+    height:42px;
+    border-radius:14px;
+    background:rgba(26,27,30,.05);
+    color:#4B4B52;
+    display:grid;
+    place-items:center;
+    flex-shrink:0;
+  }
+  .tier-ic svg{display:block}
+  .tier-name{font-size:15px;font-weight:800;color:var(--ink)}
+  .tier-sub{font-size:12px;font-weight:700;color:var(--muted)}
+  .rank-meter{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:var(--white);
+    border:1px solid var(--card-border);
+    border-radius:18px;
+    padding:14px 16px;
+    margin-bottom:14px;
+  }
+  .rm-label{font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+  .rm-status{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:15px;
+    font-weight:800;
+    color:var(--coral);
+  }
+  .rm-status .up-badge{
+    width:28px;
+    height:28px;
+    border-radius:9px;
+    background:rgba(255,107,53,.08);
+    color:var(--coral);
+    display:grid;
+    place-items:center;
+  }
+  .rm-status .up-badge svg{display:block}
+  .lb-card{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    background:var(--white);
+    border:1px solid var(--card-border);
+    border-radius:20px;
+    overflow:hidden;
+    min-height:0;
+  }
+  .lb-head{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:12px 14px;
+    border-bottom:1px solid var(--card-border);
+    font-size:12px;
+    font-weight:800;
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:.05em;
+  }
+  .lb-col-rank{width:34px;flex-shrink:0}
+  .lb-col-user{flex:1}
+  .lb-col-xp{width:64px;text-align:right;flex-shrink:0}
+  .lb-list{flex:1;overflow-y:auto}
+  .lb-row{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 14px;
+    border-bottom:1px solid var(--card-border);
+  }
+  .lb-row.promo{
+    background:rgba(26,27,30,.03);
+    box-shadow:inset 3px 0 0 var(--muted);
+  }
+  .lb-row.me{
+    background:rgba(255,107,53,.06);
+    box-shadow:inset 3px 0 0 var(--coral);
+  }
+  .lb-row.releg{
+    background:#F7F7F8;
+    color:var(--muted);
+  }
+  .rank-num{
+    width:34px;
+    text-align:center;
+    font-size:14px;
+    font-weight:800;
+    color:var(--ink);
+    flex-shrink:0;
+  }
+  .lb-row.me .rank-num{color:#6B7280}
+  .lb-row.releg .rank-num{color:var(--muted)}
+  .avatar{
+    width:34px;
+    height:34px;
+    border-radius:999px;
+    background:var(--coral);
+    color:#fff;
+    font-size:13px;
+    font-weight:800;
+    display:grid;
+    place-items:center;
+    flex-shrink:0;
+  }
+  .lb-row.me .avatar{background:var(--coral)}
+  .username{flex:1;font-size:14px;font-weight:800;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .lb-row.me .username{color:#6B7280}
+  .weekly-xp{width:64px;text-align:right;font-size:13px;font-weight:800;color:var(--ink);flex-shrink:0}
+  .lb-row.releg .weekly-xp{color:var(--muted)}
+  .zone-note{
+    display:flex;
+    gap:14px;
+    padding:10px 14px;
+    border-top:1px solid var(--card-border);
+    font-size:11px;
+    font-weight:700;
+    color:var(--muted);
+  }
+  .zone-note span{display:flex;align-items:center;gap:6px}
+  .zn-bar{width:4px;height:14px;border-radius:2px}
+  .zn-bar.promo{background:var(--muted)}
+  .zn-bar.me{background:var(--coral)}
+  .zn-bar.releg{background:#D4D4D6}
+  .rk-trophy-card{
+    background:var(--white);
+    border:1px solid var(--card-border);
+    border-radius:20px;
+    padding:14px 10px;
+    margin-bottom:14px;
+  }
+  .rk-trophy-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    padding:0 6px 12px;
+  }
+  .rk-trophy-title{font-size:14px;font-weight:800;color:var(--ink);letter-spacing:-.01em}
+  .rk-trophy-sub{font-size:11px;font-weight:700;color:var(--muted)}
+  .rk-trophies{display:grid;grid-template-columns:repeat(5,1fr)}
+  .rk-trophy{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:7px;
+    padding:2px;
+  }
+  .trophy-stage{
+    width:52px;
+    height:60px;
+    perspective:500px;
+    display:grid;
+    place-items:center;
+  }
+  .trophy{
+    position:relative;
+    width:46px;
+    height:46px;
+    transform-style:preserve-3d;
+    animation:od-trophyY 5s ease-in-out infinite;
+  }
+  .trophy-medal{
+    position:absolute;
+    inset:0;
+    border-radius:50%;
+    background:radial-gradient(circle at 32% 26%,rgba(255,255,255,.95),var(--m3d) 52%,var(--m3d-dark) 100%);
+    box-shadow:
+      inset -3px -5px 10px rgba(0,0,0,.28),
+      inset 3px 4px 8px rgba(255,255,255,.55),
+      0 14px 24px rgba(26,27,30,.22);
+  }
+  .trophy-medal::before{
+    content:"";
+    position:absolute;
+    inset:-2px;
+    border-radius:50%;
+    background:var(--m3d-dark);
+    transform:translateZ(-9px);
+  }
+  .trophy-medal::after{
+    content:"";
+    position:absolute;
+    inset:7px;
+    border-radius:50%;
+    border:2px solid rgba(255,255,255,.4);
+  }
+  .trophy-rim{
+    position:absolute;
+    inset:-2px;
+    border-radius:50%;
+    background:transparent;
+    transform:translateZ(-5px) scale(.92);
+    box-shadow:0 0 0 3px var(--m3d);
+    opacity:.55;
+  }
+  .trophy-emblem{
+    position:absolute;
+    inset:0;
+    display:grid;
+    place-items:center;
+    transform:translateZ(6px);
+    color:#fff;
+    filter:drop-shadow(0 1px 2px rgba(0,0,0,.35));
+  }
+  .trophy-emblem svg{display:block}
+  .trophy-ribbon{
+    position:absolute;
+    left:50%;
+    top:46px;
+    width:8px;
+    height:14px;
+    transform:translateX(-50%);
+    border-radius:0 0 3px 3px;
+    background:linear-gradient(180deg,var(--m3d-dark),var(--m3d));
+    transform-style:preserve-3d;
+  }
+  .rk-trophy.current .trophy-medal{box-shadow:0 0 0 3px var(--coral),0 0 0 7px rgba(255,107,53,.14),0 14px 24px rgba(26,27,30,.22)}
+  .rk-trophy.current .trophy-ribbon{background:var(--coral)}
+  .trophy-name{font-size:10px;font-weight:800;color:var(--ink);letter-spacing:.03em;text-transform:uppercase}
+  .trophy-tag{font-size:9px;font-weight:800;color:var(--muted)}
+  .rk-trophy.current .trophy-tag{color:var(--coral)}
+  .tabbar{
+    position:absolute;
+    left:16px;
+    right:16px;
+    bottom:24px;
+    display:flex;
+    align-items:center;
+    z-index:4;
+    pointer-events:none;
+  }
+  .tabbar > *{pointer-events:auto}
+  .pill{
+    display:flex;
+    align-items:center;
+    justify-content:space-evenly;
+    gap:4px;
+    padding:8px;
+    width:100%;
+    border-radius:999px;
+    background:rgba(15,23,42,.92);
+    border:1px solid rgba(255,255,255,.1);
+    box-shadow:0 18px 40px rgba(15,23,42,.35);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+  }
+  .tab{
+    display:grid;
+    place-items:center;
+    width:44px;
+    height:44px;
+    border-radius:999px;
+    text-decoration:none;
+    color:rgba(255,255,255,.7);
+    transition:color .15s ease,background .15s ease,transform .15s ease;
+  }
+  .tab.active{
+    background:var(--coral);
+    color:#fff;
+    box-shadow:0 6px 16px rgba(26,27,30,.12);
+  }
+  .tab:active{transform:scale(.92)}
+  .tab svg{display:block}
+  .nav-sep{
+    width:1px;
+    height:28px;
+    background:rgba(255,255,255,.14);
+    margin:0 6px;
+    flex-shrink:0;
+  }
+  .qfab{
+    width:48px;
+    height:48px;
+    border-radius:999px;
+    background:var(--coral);
+    border:1px solid var(--coral);
+    color:#fff;
+    display:grid;
+    place-items:center;
+    text-decoration:none;
+    box-shadow:0 8px 20px rgba(255,107,53,.4);
+    flex-shrink:0;
+    transition:transform .15s ease;
+  }
+  .qfab:active{transform:scale(.92)}
+  .qfab svg{display:block}
+  .qfab.current{
+    box-shadow:0 0 0 4px rgba(255,107,53,.15),0 8px 20px rgba(255,107,53,.4);
+  }
+  /* ---- Entrance & micro animations ---- */
+  @keyframes od-fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes od-pop{0%{opacity:0;transform:scale(.9)}70%{opacity:1;transform:scale(1.02)}100%{opacity:1;transform:scale(1)}}
+  @keyframes od-slideIn{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:translateX(0)}}
+  @keyframes od-tabbarIn{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes od-trophyY{
+    0%,100%{transform:rotateY(-24deg)}
+    50%{transform:rotateY(24deg)}
+  }
+  .rk-body > *{animation:od-fadeUp .5s cubic-bezier(.22,1,.36,1) both}
+  .rk-title{animation-delay:.05s}
+  .tier-banner{animation-delay:.15s}
+  .rank-meter{animation-delay:.25s}
+  .rk-trophy-card{animation-delay:.3s}
+  .lb-card{animation-delay:.35s}
+  .lb-row{animation:od-slideIn .45s cubic-bezier(.22,1,.36,1) both}
+  .lb-row:nth-child(1){animation-delay:.45s}
+  .lb-row:nth-child(2){animation-delay:.52s}
+  .lb-row:nth-child(3){animation-delay:.59s}
+  .lb-row:nth-child(4){animation-delay:.66s}
+  .lb-row:nth-child(5){animation-delay:.73s}
+  .lb-row:nth-child(6){animation-delay:.8s}
+  .lb-row:nth-child(7){animation-delay:.87s}
+  .lb-row:nth-child(8){animation-delay:.94s}
+  .lb-row:nth-child(9){animation-delay:1.01s}
+  .lb-row:nth-child(10){animation-delay:1.08s}
+  .zone-note{animation:od-fadeUp .5s cubic-bezier(.22,1,.36,1) 1.2s both}
+  .tabbar{animation:od-tabbarIn .55s cubic-bezier(.22,1,.36,1) .25s both}
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important}
+  }
+</style>
+</head>
+<body>
+  <div class="phone" data-od-id="rk-screen">
+    <div class="screen">
+      <div class="island"></div>
+      <div class="statusbar" data-od-id="rk-status">
+        <span class="time">9:41</span>
+        <span class="status-icons" aria-hidden="true">
+          <svg width="18" height="12" viewBox="0 0 18 12" fill="none">
+            <rect x="0" y="8" width="3" height="4" rx="1" fill="currentColor"/>
+            <rect x="5" y="5" width="3" height="7" rx="1" fill="currentColor"/>
+            <rect x="10" y="2" width="3" height="10" rx="1" fill="currentColor"/>
+            <rect x="15" y="0" width="3" height="12" rx="1" fill="currentColor" opacity=".35"/>
+          </svg>
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
+            <rect x="0" y="6" width="10" height="6" rx="2" fill="currentColor"/>
+            <path d="M12 3.5a5 5 0 0 1 0 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            <path d="M14 1a9 9 0 0 1 0 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          <svg width="26" height="12" viewBox="0 0 26 12" fill="none">
+            <rect x="0" y="1" width="22" height="10" rx="3" fill="currentColor"/>
+            <path d="M24 4v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            <rect x="2" y="3" width="16" height="6" rx="1.5" fill="var(--coral)"/>
+          </svg>
+        </span>
+      </div>
+      <div class="rk-body">
+        <h1 class="rk-title" data-od-id="rk-title">Weekly League</h1>
+        <div class="tier-banner" data-od-id="rk-tier">
+          <span class="tier-ic" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21 1.18.54 2.03 2.03 2.03 3.79"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
+            </svg>
+          </span>
+          <div>
+            <div class="tier-name">Silver League</div>
+            <div class="tier-sub">Top 5 promote to Gold · bottom 3 relegate</div>
+          </div>
+        </div>
+        <div class="rank-meter" data-od-id="rk-meter">
+          <span class="rm-label">Today's rank</span>
+          <span class="rm-status">
+            <span class="up-badge" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+            </span>
+            Rank Up — 100% done
+          </span>
+        </div>
+        <div class="rk-trophy-card" data-od-id="rk-trophies">
+          <div class="rk-trophy-head">
+            <span class="rk-trophy-title">Rank Trophies</span>
+            <span class="rk-trophy-sub">Season 4 · collection</span>
+          </div>
+          <div class="rk-trophies">
+            <div class="rk-trophy">
+              <div class="trophy-stage">
+                <div class="trophy" style="--m3d:#B0823E;--m3d-dark:#7C5A27">
+                  <span class="trophy-rim"></span>
+                  <span class="trophy-medal"></span>
+                  <span class="trophy-emblem">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+                  </span>
+                  <span class="trophy-ribbon"></span>
+                </div>
+              </div>
+              <span class="trophy-name">Bronze</span>
+              <span class="trophy-tag">Casual</span>
+            </div>
+            <div class="rk-trophy current">
+              <div class="trophy-stage">
+                <div class="trophy" style="--m3d:#B9C1CC;--m3d-dark:#7E8896">
+                  <span class="trophy-rim"></span>
+                  <span class="trophy-medal"></span>
+                  <span class="trophy-emblem">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 14.5 7.2 17l.9-5.4L4.2 7.7l5.4-.8z"/></svg>
+                  </span>
+                  <span class="trophy-ribbon"></span>
+                </div>
+              </div>
+              <span class="trophy-name">Silver</span>
+              <span class="trophy-tag">You're here</span>
+            </div>
+            <div class="rk-trophy">
+              <div class="trophy-stage">
+                <div class="trophy" style="--m3d:#E3B341;--m3d-dark:#A97F17">
+                  <span class="trophy-rim"></span>
+                  <span class="trophy-medal"></span>
+                  <span class="trophy-emblem">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 14.5 7.2 17l.9-5.4L4.2 7.7l5.4-.8z"/></svg>
+                  </span>
+                  <span class="trophy-ribbon"></span>
+                </div>
+              </div>
+              <span class="trophy-name">Gold</span>
+              <span class="trophy-tag">Competitive</span>
+            </div>
+            <div class="rk-trophy">
+              <div class="trophy-stage">
+                <div class="trophy" style="--m3d:#D9E2EC;--m3d-dark:#8FA4B8">
+                  <span class="trophy-rim"></span>
+                  <span class="trophy-medal"></span>
+                  <span class="trophy-emblem">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 14.5 7.2 17l.9-5.4L4.2 7.7l5.4-.8z"/></svg>
+                  </span>
+                  <span class="trophy-ribbon"></span>
+                </div>
+              </div>
+              <span class="trophy-name">Platinum</span>
+              <span class="trophy-tag">Elite</span>
+            </div>
+            <div class="rk-trophy">
+              <div class="trophy-stage">
+                <div class="trophy" style="--m3d:#7ECFE6;--m3d-dark:#3D97B5">
+                  <span class="trophy-rim"></span>
+                  <span class="trophy-medal"></span>
+                  <span class="trophy-emblem">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 14.5 7.2 17l.9-5.4L4.2 7.7l5.4-.8z"/></svg>
+                  </span>
+                  <span class="trophy-ribbon"></span>
+                </div>
+              </div>
+              <span class="trophy-name">Diamond</span>
+              <span class="trophy-tag">Hardcore</span>
+            </div>
+          </div>
+        </div>
+        <div class="lb-card" data-od-id="rk-table">
+          <div class="lb-head">
+            <span class="lb-col-rank">#</span>
+            <span class="lb-col-user">Player</span>
+            <span class="lb-col-xp">Weekly XP</span>
+          </div>
+          <div class="lb-list">
+            <div class="lb-row promo">
+              <span class="rank-num">1</span><span class="avatar" aria-hidden="true">JT</span><span class="username">Jordan T.</span><span class="weekly-xp">2,140</span>
+            </div>
+            <div class="lb-row promo">
+              <span class="rank-num">2</span><span class="avatar" aria-hidden="true">MK</span><span class="username">Mia K.</span><span class="weekly-xp">2,010</span>
+            </div>
+            <div class="lb-row promo me">
+              <span class="rank-num">3</span><span class="avatar" aria-hidden="true">A</span><span class="username">Alex Morgan</span><span class="weekly-xp">1,840</span>
+            </div>
+            <div class="lb-row promo">
+              <span class="rank-num">4</span><span class="avatar" aria-hidden="true">LS</span><span class="username">Leo S.</span><span class="weekly-xp">1,720</span>
+            </div>
+            <div class="lb-row promo">
+              <span class="rank-num">5</span><span class="avatar" aria-hidden="true">NW</span><span class="username">Nia W.</span><span class="weekly-xp">1,655</span>
+            </div>
+            <div class="lb-row">
+              <span class="rank-num">6</span><span class="avatar" aria-hidden="true">CB</span><span class="username">Carlos B.</span><span class="weekly-xp">1,480</span>
+            </div>
+            <div class="lb-row">
+              <span class="rank-num">7</span><span class="avatar" aria-hidden="true">AO</span><span class="username">Amara O.</span><span class="weekly-xp">1,310</span>
+            </div>
+            <div class="lb-row releg">
+              <span class="rank-num">8</span><span class="avatar" aria-hidden="true">RF</span><span class="username">Rafi F.</span><span class="weekly-xp">1,120</span>
+            </div>
+            <div class="lb-row releg">
+              <span class="rank-num">9</span><span class="avatar" aria-hidden="true">TP</span><span class="username">Tess P.</span><span class="weekly-xp">980</span>
+            </div>
+            <div class="lb-row releg">
+              <span class="rank-num">10</span><span class="avatar" aria-hidden="true">DK</span><span class="username">Dev K.</span><span class="weekly-xp">740</span>
+            </div>
+          </div>
+          <div class="zone-note" data-od-id="rk-zones">
+            <span><i class="zn-bar promo"></i> Promotion</span>
+            <span><i class="zn-bar me"></i> You</span>
+            <span><i class="zn-bar releg"></i> Relegation</span>
+          </div>
+        </div>
+      </div>
+      <nav class="tabbar" data-od-id="tabbar" aria-label="Primary navigation">
+        <div class="pill">
+          <a class="tab" data-od-id="tab-dash" href="questify-dashboard.html" aria-label="Home">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 10.5 12 3l9 7.5V20a2 2 0 0 1-2 2h-5v-6H10v6H5a2 2 0 0 1-2-2Z"/>
+            </svg>
+          </a>
+          <a class="tab" data-od-id="tab-plan" href="questify-plan.html" aria-label="Tasks">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+            </svg>
+          </a>
+          <a class="tab active" data-od-id="tab-league" href="questify-rankings.html" aria-label="Ranks" aria-current="page">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+              <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+              <path d="M4 22h16"/>
+              <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+              <path d="M14 14.66V17c0 .55.47.98.97 1.21 1.18.54 2.03 2.03 2.03 3.79"/>
+              <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
+            </svg>
+          </a>
+          <a class="tab" data-od-id="tab-profile" href="questify-account.html" aria-label="Profile">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="8" r="4"/>
+              <path d="M4 21v-1a7 7 0 0 1 14 0v1"/>
+            </svg>
+          </a>
+          <span class="nav-sep" aria-hidden="true"></span>
+          <a class="qfab" data-od-id="home-fab" href="questify-camera.html" aria-label="Qubi AI camera">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="5" y="11" width="14" height="10" rx="2"/>
+              <path d="M12 11V7"/>
+              <path d="M9 7h6"/>
+              <circle cx="12" cy="16" r="3"/>
+            </svg>
+          </a>
+        </div>
+      </nav>
+    </div>
+  </div>
+  <p class="stage-label">Questify · Weekly League · Module 4 · 390 × 844</p>
+</body>
+</html>

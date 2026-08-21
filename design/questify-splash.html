@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Questify — Splash Carousel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --coral:#FF6B35;
+    --coral-deep:#E2551F;
+    --peach:#F2F2F3;
+    --canvas:#FAFAFA;
+    --ink:#1A1B1E;
+    --muted:#6B7280;
+    --card-border:#E7E7E8;
+    --white:#FFFFFF;
+    --display:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    font-family:var(--display);
+    background:#ECECED;
+    min-height:100vh;
+    display:grid;
+    place-items:center;
+    gap:18px;
+    padding:24px;
+  }
+  .stage-label{
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:#6B7280;
+    text-align:center;
+    margin-top:-8px;
+  }
+  .phone{
+    width:390px;
+    height:844px;
+    background:#1A1A1B;
+    border-radius:54px;
+    padding:10px;
+    box-shadow:0 34px 70px rgba(26,27,30,.28),0 6px 16px rgba(26,27,30,.10);
+    position:relative;
+  }
+  .screen{
+    width:100%;
+    height:100%;
+    border-radius:46px;
+    overflow:hidden;
+    background:var(--coral);
+    display:flex;
+    flex-direction:column;
+    position:relative;
+  }
+  .island{
+    position:absolute;
+    top:20px;
+    left:50%;
+    transform:translateX(-50%);
+    width:126px;
+    height:34px;
+    background:#000;
+    border-radius:20px;
+    z-index:6;
+  }
+  .statusbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 28px 0;
+    color:var(--white);
+    z-index:5;
+  }
+  .statusbar .time{font-size:15px;font-weight:700;letter-spacing:.02em}
+  .status-icons{display:flex;align-items:center;gap:6px}
+  .status-icons svg{display:block}
+  .topnav{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    padding:10px 20px 0;
+  }
+  .skip{
+    font-size:15px;
+    font-weight:700;
+    color:rgba(255,255,255,.85);
+    text-decoration:none;
+    padding:10px 12px;
+    border-radius:999px;
+    transition:background .15s ease,color .15s ease;
+  }
+  .skip:hover{background:rgba(255,255,255,.12);color:#fff}
+  .carousel{
+    flex:1;
+    position:relative;
+    margin-top:6px;
+  }
+  .car-slide{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-start;
+    padding:20px 28px 0;
+    text-align:center;
+    opacity:0;
+    transform:translateX(28px);
+    transition:opacity .4s ease,transform .4s ease;
+    pointer-events:none;
+  }
+  .car-slide.active{
+    opacity:1;
+    transform:translateX(0);
+    pointer-events:auto;
+  }
+  .car-slide .art{
+    width:100%;
+    height:236px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:24px;
+  }
+  .car-slide h2{
+    font-size:26px;
+    font-weight:800;
+    letter-spacing:-.02em;
+    color:var(--white);
+    text-shadow:0 2px 0 rgba(26,27,30,.10);
+    margin-bottom:10px;
+  }
+  .car-slide p{
+    font-size:15px;
+    font-weight:500;
+    color:rgba(255,255,255,.88);
+    line-height:1.55;
+    max-width:300px;
+  }
+  .dots{
+    display:flex;
+    justify-content:center;
+    gap:8px;
+    padding:0 0 18px;
+  }
+  .dot{
+    width:8px;
+    height:8px;
+    border:0;
+    border-radius:999px;
+    background:rgba(255,255,255,.4);
+    padding:0;
+    cursor:pointer;
+    transition:width .3s ease,background .3s ease;
+  }
+  .dot.active{
+    width:26px;
+    background:var(--white);
+  }
+  .cta-zone{
+    padding:0 24px 20px;
+  }
+  .cta{
+    width:100%;
+    height:52px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:0;
+    border-radius:999px;
+    background:var(--white);
+    color:var(--coral-deep);
+    font-family:var(--display);
+    font-size:17px;
+    font-weight:800;
+    letter-spacing:.01em;
+    text-decoration:none;
+    box-shadow:0 4px 0 rgba(26,27,30,.20);
+    transition:transform .15s ease,box-shadow .15s ease,filter .15s ease;
+  }
+  .cta:hover{filter:brightness(.98)}
+  .cta:active{
+    transform:translateY(3px);
+    box-shadow:0 1px 0 rgba(26,27,30,.20);
+  }
+  .login-row{
+    margin-top:14px;
+    text-align:center;
+    font-size:14px;
+    font-weight:600;
+    color:rgba(255,255,255,.85);
+  }
+  .login-row a{
+    color:var(--white);
+    font-weight:800;
+    text-decoration:underline;
+  }
+  .login-row a:active{opacity:.7}
+  .quest-card{
+    position:relative;
+    width:226px;
+    background:var(--white);
+    border-radius:22px;
+    padding:20px;
+    box-shadow:0 20px 40px rgba(26,27,30,.28),0 4px 10px rgba(26,27,30,.10);
+    text-align:left;
+    transform:rotate(-3deg);
+  }
+  .quest-card .qc-check{
+    width:36px;
+    height:36px;
+    border-radius:13px;
+    background:var(--coral);
+    display:grid;
+    place-items:center;
+    margin-bottom:14px;
+    color:#fff;
+  }
+  .quest-card .qc-title{
+    font-size:17px;
+    font-weight:800;
+    color:var(--ink);
+  }
+  .quest-card .qc-sub{
+    font-size:13px;
+    font-weight:600;
+    color:var(--muted);
+    margin:2px 0 14px;
+  }
+  .quest-card .qc-track{
+    height:8px;
+    border-radius:999px;
+    background:var(--card-border);
+    overflow:hidden;
+    margin-bottom:14px;
+  }
+  .quest-card .qc-fill{
+    display:block;
+    height:100%;
+    width:%;
+    border-radius:999px;
+    background:var(--coral);
+  }
+  .quest-card .qc-xp{
+    display:inline-block;
+    font-size:12px;
+    font-weight:800;
+    color:var(--ink);
+    background:rgba(26,27,30,.06);
+    padding:6px 12px;
+    border-radius:999px;
+  }
+  .questie-badge{
+    position:absolute;
+    top:-18px;
+    right:-14px;
+    width:56px;
+    height:56px;
+    background:var(--white);
+    border:3px solid var(--white);
+    border-radius:999px;
+    box-shadow:0 10px 22px rgba(26,27,30,.25);
+    display:grid;
+    place-items:center;
+  }
+  .streak-stage{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:14px;
+  }
+  .streak-chip{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:var(--white);
+    color:var(--coral-deep);
+    font-size:14px;
+    font-weight:800;
+    padding:10px 18px;
+    border-radius:999px;
+    box-shadow:0 12px 26px rgba(26,27,30,.22);
+  }
+  .podium{
+    display:flex;
+    align-items:flex-end;
+    gap:10px;
+    height:64px;
+    margin-top:4px;
+  }
+  .podium .bar{
+    width:42px;
+    border-radius:10px 10px 0 0;
+  }
+  .podium .bar.one{height:64px;background:var(--white)}
+  .podium .bar.two{height:46px;background:rgba(255,255,255,.6)}
+  .podium .bar.three{height:34px;background:rgba(255,255,255,.42)}
+  .shield-stage{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+  .shield-chip{
+    margin-top:18px;
+    display:flex;
+    align-items:center;
+    gap:7px;
+    background:var(--white);
+    color:var(--coral-deep);
+    font-size:14px;
+    font-weight:800;
+    padding:10px 18px;
+    border-radius:999px;
+    box-shadow:0 12px 26px rgba(26,27,30,.22);
+  }
+</style>
+</head>
+<body>
+  <div class="phone" data-od-id="splash-screen">
+    <div class="screen">
+      <div class="island"></div>
+      <div class="statusbar" data-od-id="splash-status">
+        <span class="time">9:41</span>
+        <span class="status-icons" aria-hidden="true">
+          <svg width="18" height="12" viewBox="0 0 18 12" fill="none">
+            <rect x="0" y="8" width="3" height="4" rx="1" fill="currentColor"/>
+            <rect x="5" y="5" width="3" height="7" rx="1" fill="currentColor"/>
+            <rect x="10" y="2" width="3" height="10" rx="1" fill="currentColor"/>
+            <rect x="15" y="0" width="3" height="12" rx="1" fill="currentColor" opacity=".35"/>
+          </svg>
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
+            <rect x="0" y="6" width="10" height="6" rx="2" fill="currentColor"/>
+            <path d="M12 3.5a5 5 0 0 1 0 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            <path d="M14 1a9 9 0 0 1 0 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          <svg width="26" height="12" viewBox="0 0 26 12" fill="none">
+            <rect x="0" y="1" width="22" height="10" rx="3" fill="currentColor"/>
+            <path d="M24 4v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            <rect x="2" y="3" width="16" height="6" rx="1.5" fill="var(--coral)"/>
+          </svg>
+        </span>
+      </div>
+      <div class="topnav">
+        <a class="skip" data-od-id="splash-skip" href="questify-identity.html">Skip</a>
+      </div>
+      <div class="carousel" data-od-id="splash-carousel">
+        <section class="car-slide active" data-od-id="car-slide-quests">
+          <div class="art" aria-hidden="true">
+            <div class="quest-card">
+              <div class="questie-badge">
+                <svg width="40" height="40" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M60 4 L74 26 Q60 36 46 26 Z" fill="#F4A261"/>
+                  <path d="M60 10 L68 24 Q60 29 52 24 Z" fill="#E76F51"/>
+                  <circle cx="60" cy="64" r="46" fill="#FFFFFF" stroke="#E7E7E8" stroke-width="2"/>
+                  <circle cx="48" cy="62" r="5" fill="#1A1B1E"/>
+                  <circle cx="72" cy="62" r="5" fill="#1A1B1E"/>
+                  <path d="M50 72 Q60 81 70 72" stroke="#1A1B1E" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+                  <circle cx="38" cy="70" r="6" fill="#E76F51" opacity=".25"/>
+                  <circle cx="82" cy="70" r="6" fill="#E76F51" opacity=".25"/>
+                </svg>
+              </div>
+              <span class="qc-check" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 12l5 5L20 6"/>
+                </svg>
+              </span>
+              <div class="qc-title">Drink Water</div>
+              <div class="qc-sub">500 ml · before 9 AM</div>
+              <div class="qc-track"><span class="qc-fill"></span></div>
+              <span class="qc-xp">+10 XP</span>
+            </div>
+          </div>
+          <h2 data-od-id="car-slide-1-title">Turn habits into quests</h2>
+          <p data-od-id="car-slide-1-copy">Small daily actions become quests with XP, rewards and a cheer squad named Questie.</p>
+        </section>
+        <section class="car-slide" data-od-id="car-slide-streaks">
+          <div class="art" aria-hidden="true">
+            <div class="streak-stage">
+              <svg width="120" height="110" viewBox="0 0 120 110" xmlns="http://www.w3.org/2000/svg">
+                <path d="M60 6c8 14 20 22 20 40a20 20 0 1 1-40 0c0-8 4-15 8-20 1 6 4 10 8 12 0-11 1-22 4-32Z" fill="#F4A261"/>
+                <path d="M60 24c5 8 13 14 13 26a13 13 0 1 1-26 0c0-6 3-10 5-14 1 5 3 7 5 9 0-7 1-15 3-21Z" fill="#E76F51"/>
+              </svg>
+              <div class="streak-chip">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M13 2 4.6 13.4h5.7L9.7 22l8.7-11.6h-5.7L13 2Z" fill="currentColor"/>
+                </svg>
+                14-day streak
+              </div>
+              <div class="podium" aria-hidden="true">
+                <div class="bar three"></div>
+                <div class="bar one"></div>
+                <div class="bar two"></div>
+              </div>
+            </div>
+          </div>
+          <h2 data-od-id="car-slide-2-title">Streaks &amp; leagues</h2>
+          <p data-od-id="car-slide-2-copy">Keep your flame alive and climb the weekly league with players just like you.</p>
+        </section>
+        <section class="car-slide" data-od-id="car-slide-proof">
+          <div class="art" aria-hidden="true">
+            <div class="shield-stage">
+              <svg width="150" height="150" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                <path d="M60 6l42 16v38c0 30-19 49-42 60-23-11-42-30-42-60V22L60 6Z" fill="#FFFFFF"/>
+                <path d="M60 22l28 10v26c0 21-13 34-28 42-15-8-28-21-28-42V32L60 22Z" fill="#FAFAFA" stroke="#E7E7E8"/>
+                <path d="M46 60l10 10 18-20" stroke="#E76F51" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                <circle cx="86" cy="26" r="8" fill="#F4A261"/>
+                <path d="M86 23v6M83 26h6" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              <div class="shield-chip">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M4 12l5 5L20 6" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Streak locked
+              </div>
+            </div>
+          </div>
+          <h2 data-od-id="car-slide-3-title">Never miss a day</h2>
+          <p data-od-id="car-slide-3-copy">Snap a 1-second photo. AI verifies it, you earn +50 XP, and your streak is locked.</p>
+        </section>
+      </div>
+      <div class="dots" data-od-id="splash-dots">
+        <button class="dot active" data-od-id="dot-1" type="button" aria-label="Slide 1"></button>
+        <button class="dot" data-od-id="dot-2" type="button" aria-label="Slide 2"></button>
+        <button class="dot" data-od-id="dot-3" type="button" aria-label="Slide 3"></button>
+      </div>
+      <div class="cta-zone">
+        <a class="cta" data-od-id="splash-cta" href="questify-identity.html" id="splash-cta">Next ➔</a>
+        <p class="login-row" data-od-id="splash-login-link">
+          Already have an account? <a href="questify-login.html">Log in</a>
+        </p>
+      </div>
+    </div>
+  </div>
+  <p class="stage-label">Questify · Splash · Step 1 of 18 · 390 × 844</p>
+  <script>
+    (function(){
+      var slides=Array.prototype.slice.call(document.querySelectorAll('.car-slide'));
+      var dots=Array.prototype.slice.call(document.querySelectorAll('.dot'));
+      var cta=document.getElementById('splash-cta');
+      var idx=0;
+      function paint(){
+        slides.forEach(function(s,i){s.classList.toggle('active',i===idx);});
+        dots.forEach(function(d,i){d.classList.toggle('active',i===idx);});
+        cta.textContent=(idx===slides.length-1)?'Get Started ➔':'Next ➔';
+      }
+      cta.addEventListener('click',function(e){
+        if(idx<slides.length-1){e.preventDefault();idx++;paint();}
+      });
+      dots.forEach(function(d,i){
+        d.addEventListener('click',function(){idx=i;paint();});
+      });
+      paint();
+    })();
+  </script>
+</body>
+</html>

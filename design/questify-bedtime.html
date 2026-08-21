@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Questify — Bedtime Routine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --coral:#FF6B35;
+    --coral-deep:#E2551F;
+    --peach:#F2F2F3;
+    --canvas:#FAFAFA;
+    --ink:#1A1B1E;
+    --muted:#6B7280;
+    --card-border:#E7E7E8;
+    --white:#FFFFFF;
+    --display:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:var(--display);
+    background:#ECECED;
+    min-height:100vh;
+    display:grid;
+    place-items:center;
+    gap:18px;
+    padding:24px;
+  }
+  .stage-label{
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:#6B7280;
+    text-align:center;
+    margin-top:-8px;
+  }
+  .phone{
+    width:390px;
+    height:844px;
+    background:#1A1A1B;
+    border-radius:54px;
+    padding:10px;
+    box-shadow:0 34px 70px rgba(26,27,30,.28),0 6px 16px rgba(26,27,30,.10);
+    position:relative;
+  }
+  .screen{
+    width:100%;
+    height:100%;
+    border-radius:46px;
+    overflow:hidden;
+    background:var(--canvas);
+    display:flex;
+    flex-direction:column;
+    position:relative;
+  }
+  .island{
+    position:absolute;
+    top:20px;
+    left:50%;
+    transform:translateX(-50%);
+    width:126px;
+    height:34px;
+    background:#000;
+    border-radius:20px;
+    z-index:6;
+  }
+  .statusbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 28px 0;
+    color:var(--ink);
+    z-index:5;
+  }
+  .statusbar .time{font-size:15px;font-weight:700;letter-spacing:.02em}
+  .status-icons{display:flex;align-items:center;gap:6px}
+  .status-icons svg{display:block}
+  .topnav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 20px 0;
+  }
+  .back-btn{
+    width:44px;
+    height:44px;
+    border-radius:14px;
+    border:1px solid var(--card-border);
+    background:var(--white);
+    display:grid;
+    place-items:center;
+    cursor:pointer;
+    color:var(--ink);
+    text-decoration:none;
+    transition:transform .15s ease,background .15s ease;
+  }
+  .back-btn:hover{background:#FFFFFF}
+  .back-btn:active{transform:scale(.95)}
+  .step-badge{
+    height:34px;
+    padding:0 14px;
+    border-radius:999px;
+    background:rgba(26,27,30,.05);
+    color:var(--ink);
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:.02em;
+    display:flex;
+    align-items:center;
+  }
+  .progress-wrap{
+    padding:16px 20px 0;
+  }
+  .progress-track{
+    height:6px;
+    border-radius:999px;
+    background:var(--card-border);
+    overflow:hidden;
+  }
+  .progress-fill{
+    display:block;
+    height:100%;
+    width:44%;
+    border-radius:999px;
+    background:var(--coral);
+    animation:grow 1.1s cubic-bezier(.22,1.2,.36,1) .15s both;
+    transform-origin:left;
+  }
+  @keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  .bed-body{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:24px 24px 24px;
+    overflow:hidden;
+  }
+  .mascot-mini{width:52px;height:52px;margin-bottom:12px}
+  .bed-title{
+    font-size:26px;
+    font-weight:800;
+    letter-spacing:-.02em;
+    color:var(--ink);
+    line-height:1.2;
+    margin-bottom:8px;
+  }
+  .bed-sub{
+    font-size:15px;
+    font-weight:500;
+    color:var(--muted);
+    line-height:1.5;
+    margin-bottom:24px;
+  }
+  .bed-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+  .bed-card{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    min-height:120px;
+    background:var(--white);
+    border:2px solid var(--card-border);
+    border-radius:18px;
+    cursor:pointer;
+    font-family:var(--display);
+    text-align:center;
+    padding:16px 12px;
+    transition:border-color .15s ease,background .15s ease,transform .15s ease;
+  }
+  .bed-card:hover{border-color:#D8D8DA}
+  .bed-card:active{transform:scale(.97)}
+  .bed-card .card-check{
+    position:absolute;
+    top:10px;
+    right:10px;
+    width:24px;
+    height:24px;
+    border-radius:50%;
+    border:2px solid var(--card-border);
+    background:var(--white);
+    color:var(--white);
+    display:grid;
+    place-items:center;
+    opacity:0;
+    transition:opacity .15s ease,background .15s ease,border-color .15s ease;
+  }
+  .bed-card.selected{
+    border-color:var(--coral);
+    background:#FFFFFF;
+  }
+  .bed-card.selected .card-check{
+    opacity:1;
+    background:var(--coral);
+    border-color:var(--coral);
+  }
+  .bed-card.selected .card-label{color:var(--coral-deep)}
+  .bed-card.selected .card-icon{
+    background:rgba(26,27,30,.05);
+    color:var(--coral-deep);
+  }
+  .bed-card .card-icon{
+    width:48px;
+    height:48px;
+    border-radius:16px;
+    background:rgba(26,27,30,.05);
+    color:var(--coral);
+    display:grid;
+    place-items:center;
+    transition:background .15s ease,color .15s ease;
+  }
+  .bed-card .card-icon svg{display:block}
+  .card-label{
+    font-size:16px;
+    font-weight:700;
+    color:var(--ink);
+    line-height:1.25;
+  }
+  .continue-btn{
+    width:100%;
+    height:52px;
+    border:0;
+    border-radius:999px;
+    background:var(--coral);
+    color:var(--white);
+    font-family:var(--display);
+    font-size:17px;
+    font-weight:700;
+    letter-spacing:.01em;
+    cursor:pointer;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 4px 0 var(--coral-deep);
+    transition:transform .15s ease,box-shadow .15s ease,opacity .15s ease,background .15s ease;
+    margin-top:24px;
+  }
+  .continue-btn:hover{filter:brightness(1.03)}
+  .continue-btn:active{
+    transform:translateY(3px);
+    box-shadow:0 1px 0 var(--coral-deep);
+  }
+  .continue-btn.disabled{
+    background:#D9D4CB;
+    box-shadow:0 4px 0 #C4BEB4;
+    pointer-events:none;
+    opacity:.85;
+  }
+</style>
+</head>
+<body>
+  <div class="phone" data-od-id="bed-screen">
+    <div class="screen">
+      <div class="island"></div>
+      <div class="statusbar" data-od-id="bed-status">
+        <span class="time">9:41</span>
+        <span class="status-icons" aria-hidden="true">
+          <svg width="18" height="12" viewBox="0 0 18 12" fill="none">
+            <rect x="0" y="8" width="3" height="4" rx="1" fill="currentColor"/>
+            <rect x="5" y="5" width="3" height="7" rx="1" fill="currentColor"/>
+            <rect x="10" y="2" width="3" height="10" rx="1" fill="currentColor"/>
+            <rect x="15" y="0" width="3" height="12" rx="1" fill="currentColor" opacity=".35"/>
+          </svg>
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
+            <rect x="0" y="6" width="10" height="6" rx="2" fill="currentColor"/>
+            <path d="M12 3.5a5 5 0 0 1 0 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            <path d="M14 1a9 9 0 0 1 0 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          <svg width="26" height="12" viewBox="0 0 26 12" fill="none">
+            <rect x="0" y="1" width="22" height="10" rx="3" fill="currentColor"/>
+            <path d="M24 4v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            <rect x="2" y="3" width="16" height="6" rx="1.5" fill="var(--coral)"/>
+          </svg>
+        </span>
+      </div>
+      <div class="topnav">
+        <a class="back-btn" data-od-id="bed-back" href="questify-wake.html" aria-label="Back to wake-up time">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <span class="step-badge" data-od-id="bed-badge">Step 8 of 18</span>
+      </div>
+      <div class="progress-wrap" data-od-id="bed-progress">
+        <div class="progress-track"><span class="progress-fill"></span></div>
+      </div>
+      <div class="bed-body">
+        <svg class="mascot-mini" data-od-id="bed-mascot" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Questie the Questify mascot">
+          <path d="M60 4 L74 26 Q60 36 46 26 Z" fill="#F4A261"/>
+          <path d="M60 10 L68 24 Q60 29 52 24 Z" fill="#E76F51"/>
+          <circle cx="60" cy="64" r="46" fill="#FFFFFF" stroke="#E7E7E8" stroke-width="2"/>
+          <circle cx="48" cy="62" r="5" fill="#1A1B1E"/>
+          <circle cx="72" cy="62" r="5" fill="#1A1B1E"/>
+          <path d="M50 72 Q60 81 70 72" stroke="#1A1B1E" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+          <circle cx="38" cy="70" r="6" fill="#E76F51" opacity=".25"/>
+          <circle cx="82" cy="70" r="6" fill="#E76F51" opacity=".25"/>
+        </svg>
+        <h1 class="bed-title" data-od-id="bed-title">When's your bedtime?</h1>
+        <p class="bed-sub" data-od-id="bed-subtitle">Evening quests will wrap up before you wind down.</p>
+        <div class="bed-grid" data-od-id="bed-grid">
+          <button class="bed-card" data-od-id="bed-card-9" type="button" aria-pressed="false">
+            <span class="card-icon" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 6v6l4 2"/>
+              </svg>
+            </span>
+            <span class="card-label">09:00 PM</span>
+            <span class="card-check" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 12l5 5L20 6"/>
+              </svg>
+            </span>
+          </button>
+          <button class="bed-card" data-od-id="bed-card-10" type="button" aria-pressed="false">
+            <span class="card-icon" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+              </svg>
+            </span>
+            <span class="card-label">10:00 PM</span>
+            <span class="card-check" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 12l5 5L20 6"/>
+              </svg>
+            </span>
+          </button>
+          <button class="bed-card" data-od-id="bed-card-11" type="button" aria-pressed="false">
+            <span class="card-icon" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/>
+              </svg>
+            </span>
+            <span class="card-label">11:00 PM</span>
+            <span class="card-check" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 12l5 5L20 6"/>
+              </svg>
+            </span>
+          </button>
+          <button class="bed-card" data-od-id="bed-card-12" type="button" aria-pressed="false">
+            <span class="card-icon" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 21a9 9 0 1 1 9-9"/>
+                <path d="M12 21a9 9 0 0 0 9-9"/>
+                <circle cx="12" cy="12" r="2.5"/>
+              </svg>
+            </span>
+            <span class="card-label">12:00 AM+</span>
+            <span class="card-check" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 12l5 5L20 6"/>
+              </svg>
+            </span>
+          </button>
+        </div>
+        <a class="continue-btn disabled" data-od-id="bed-continue" href="questify-obstacle.html" aria-disabled="true">Continue ➔</a>
+      </div>
+    </div>
+  </div>
+  <p class="stage-label">Questify · Bedtime Routine · Step 8 of 18 · 390 × 844</p>
+  <script>
+    (function(){
+      var cards = document.querySelectorAll('.bed-card');
+      var cont = document.querySelector('.continue-btn');
+      cards.forEach(function(card){
+        card.addEventListener('click', function(){
+          var wasSelected = card.classList.contains('selected');
+          cards.forEach(function(c){
+            c.classList.remove('selected');
+            c.setAttribute('aria-pressed','false');
+          });
+          if(!wasSelected){
+            card.classList.add('selected');
+            card.setAttribute('aria-pressed','true');
+          }
+          var any = document.querySelector('.bed-card.selected');
+          cont.classList.toggle('disabled', !any);
+          cont.setAttribute('aria-disabled', any ? 'false' : 'true');
+        });
+      });
+      cont.addEventListener('click', function(){
+        if(!cont.classList.contains('disabled')) location.href = 'questify-obstacle.html';
+      });
+    })();
+  </script>
+</body>
+</html>

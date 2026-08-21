@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Performance Overview - Questify</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-container": "#5f1900",
+                        "on-primary-fixed": "#390c00",
+                        "outline": "#8d7168",
+                        "tertiary": "#515f74",
+                        "on-secondary": "#ffffff",
+                        "primary-fixed-dim": "#ffb59d",
+                        "surface-container": "#eceef1",
+                        "on-tertiary-container": "#243245",
+                        "surface-container-high": "#e6e8eb",
+                        "outline-variant": "#e1bfb5",
+                        "surface-tint": "#ab3500",
+                        "on-tertiary": "#ffffff",
+                        "inverse-on-surface": "#eff1f4",
+                        "tertiary-fixed-dim": "#b9c7df",
+                        "tertiary-fixed": "#d5e3fc",
+                        "surface-container-highest": "#e0e3e6",
+                        "secondary": "#565e74",
+                        "on-error": "#ffffff",
+                        "on-surface": "#191c1e",
+                        "inverse-primary": "#ffb59d",
+                        "on-secondary-fixed": "#131b2e",
+                        "on-error-container": "#93000a",
+                        "tertiary-container": "#8c9ab1",
+                        "on-primary-fixed-variant": "#832600",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "primary-container": "#ff6b35",
+                        "secondary-container": "#dae2fd",
+                        "error-container": "#ffdad6",
+                        "surface-container-low": "#f2f4f7",
+                        "on-surface-variant": "#594139",
+                        "surface-variant": "#e0e3e6",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "error": "#ba1a1a",
+                        "primary": "#ab3500",
+                        "on-tertiary-fixed": "#0d1c2e",
+                        "on-primary": "#ffffff",
+                        "surface-dim": "#d8dadd",
+                        "on-tertiary-fixed-variant": "#3a485b",
+                        "background": "#f7f9fc",
+                        "surface-bright": "#f7f9fc",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#191c1e",
+                        "primary-fixed": "#ffdbd0",
+                        "on-secondary-container": "#5c647a",
+                        "inverse-surface": "#2d3133",
+                        "surface": "#f7f9fc",
+                        "secondary-fixed": "#dae2fd"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "8px",
+                        "xl": "64px",
+                        "container-max": "1200px",
+                        "base": "4px",
+                        "gutter": "16px",
+                        "md": "24px",
+                        "margin-mobile": "20px",
+                        "lg": "40px",
+                        "sm": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "display": ["Plus Jakarta Sans"],
+                        "button": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "label-bold": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "700" }],
+                        "display": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "button": ["16px", { "lineHeight": "1", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "fontWeight": "800" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-bold": ["14px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "800" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+        
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #e0e3e6;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #8c9ab1;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background antialiased min-h-screen pb-24 md:pb-0">
+<!-- TopAppBar (Web) -->
+<header class="hidden md:flex justify-between items-center w-full px-margin-mobile h-16 bg-background flat no shadows sticky top-0 z-40">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary text-[32px]">flag</span>
+<span class="text-headline-md font-headline-md font-extrabold text-primary">Questify</span>
+</div>
+<nav class="flex items-center gap-md">
+<a class="text-on-surface-variant font-label-bold text-label-bold hover:opacity-80 transition-opacity flex items-center gap-base" href="#">
+<span class="material-symbols-outlined">home</span>
+                Home
+            </a>
+<a class="text-on-surface-variant font-label-bold text-label-bold hover:opacity-80 transition-opacity flex items-center gap-base" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+                Plan
+            </a>
+<a class="text-on-surface-variant font-label-bold text-label-bold hover:opacity-80 transition-opacity flex items-center gap-base" href="#">
+<span class="material-symbols-outlined">leaderboard</span>
+                League
+            </a>
+<a class="text-on-surface-variant font-label-bold text-label-bold hover:opacity-80 transition-opacity flex items-center gap-base" href="#">
+<span class="material-symbols-outlined">account_tree</span>
+                Skills
+            </a>
+<a class="text-primary font-label-bold text-label-bold flex items-center gap-base" href="#">
+<span class="material-symbols-outlined fill">person</span>
+                Profile
+            </a>
+</nav>
+<div class="flex items-center gap-sm">
+<button class="p-2 rounded-full hover:bg-surface-container-high transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-container">
+<img alt="QUBI AI Mascot" class="w-full h-full object-cover" data-alt="A small, stylized 3D avatar of a friendly robotic mascot character with a glowing orange screen face, set against a clean white background in a modern 3D rendered style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmkOx1tCBEZW0vPiwXgsQCLJ-P-nvOrk-d6fbljYPJTB9loeLNNxe64JVn0yj7f_uCxa-8N7CgFgzK_lBQUGhWKa0awLwVzkjQTQjuaDUz6fy1vJrbu_ll3NcTXqXMEi2N39p2R8Jap9SORu1tQcUpqnwtk3aBH52aVGQuh_1mvF_t5cML5FdKR6z1a4kdJ7KadzQYHfCH3PMt_YhACEod0PLZTDA-md53xgqZGCUTkRaGVPJKPha25Q"/>
+</div>
+</div>
+</header>
+<!-- TopAppBar (Mobile) -->
+<header class="md:hidden flex justify-between items-center w-full px-margin-mobile h-16 bg-background flat no shadows sticky top-0 z-40">
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-container">
+<img alt="QUBI AI Mascot" class="w-full h-full object-cover" data-alt="A small, stylized 3D avatar of a friendly robotic mascot character with a glowing orange screen face, set against a clean white background in a modern 3D rendered style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBL9qC6_S4wuSTd1mFNPqAEJhM_HVqggMrbzaMyXZ8U5pihAA8nAmhimcUNVPxper1C2p3_JkQHukeKPPYs0QpFLjkN_jSXxrA3ceKAjhIZKx2HjQ2hzV_RmXgNNiilv1XyUZAsL97Nigo4X31al7fCbeeUYRsDjyBS2b8Ddjg9qa203-wkiZdt2tG-TfoGS7z4NFZjjc2GfnUR0BBcmjc5sIyVu8JTYL4J-FTFOXMNFt-TBseZtgbOYg"/>
+</div>
+<span class="text-headline-lg-mobile font-headline-lg-mobile font-extrabold text-primary">Questify</span>
+<button class="p-2 rounded-full hover:bg-surface-container-high transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-lg py-lg space-y-lg">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-sm">
+<div>
+<h1 class="text-headline-lg-mobile md:text-headline-lg font-headline-lg-mobile md:font-headline-lg text-on-background">Performance Overview</h1>
+<p class="text-body-md font-body-md text-on-surface-variant mt-1">Track your progress and stats</p>
+</div>
+<div class="flex items-center gap-xs bg-surface-container-lowest px-4 py-2 rounded-xl shadow-[0px_4px_20px_rgba(15,23,42,0.05)]">
+<span class="material-symbols-outlined text-primary-container">sync</span>
+<span class="text-label-bold font-label-bold text-on-surface-variant">Last updated: Just now</span>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-md auto-rows-min">
+<!-- Hero Stat: Level & XP -->
+<div class="md:col-span-8 bg-surface-container-lowest rounded-[24px] p-md shadow-[0px_4px_20px_rgba(15,23,42,0.05)] relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-primary-container/5 to-transparent pointer-events-none"></div>
+<div class="flex flex-col h-full justify-between relative z-10">
+<div class="flex justify-between items-start">
+<div>
+<span class="text-label-bold font-label-bold text-primary tracking-wider uppercase">Current Status</span>
+<div class="flex items-baseline gap-xs mt-2">
+<h2 class="text-display font-display text-on-background">Level 8</h2>
+<span class="text-body-lg font-body-lg text-on-surface-variant">Adept</span>
+</div>
+</div>
+<div class="w-16 h-16 bg-primary-container/10 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[32px]">military_tech</span>
+</div>
+</div>
+<div class="mt-xl">
+<div class="flex justify-between text-label-bold font-label-bold mb-2">
+<span class="text-on-surface-variant">Total XP</span>
+<span class="text-on-background">12,450 / 15,000</span>
+</div>
+<div class="h-2 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full w-[83%] relative">
+<div class="absolute inset-0 bg-white/20 w-full h-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full" style="animation: shimmer 2s infinite;"></div>
+</div>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant mt-2 text-right">2,550 XP to Level 9</p>
+</div>
+</div>
+</div>
+<!-- League Status -->
+<div class="md:col-span-4 bg-surface-container-lowest rounded-[24px] p-md shadow-[0px_4px_20px_rgba(15,23,42,0.05)] flex flex-col items-center justify-center text-center relative">
+<div class="absolute top-0 w-full h-1 bg-gradient-to-r from-transparent via-[#FFD700] to-transparent"></div>
+<div class="w-24 h-24 mb-4 relative">
+<img alt="Gold League Emblem" class="w-full h-full object-contain drop-shadow-lg" data-alt="A meticulously crafted 3D golden shield emblem with glowing edges and intricate runic details, hovering slightly. The lighting is bright and heroic, emphasizing a high-tier achievement in a gamified productivity application." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDB1rrHXzcEBSqld6jILM2eqcY44OgKJ69IWuiIXr5HzppbkoB-VyfRL1cd5w1dbe8-YEuaG4qlxyn0DrAPZgg6AlbZj1kZQX5X-5O6qtsdxWsyEYZk4LXzl3-Zt2NozJKDCfs2c7W-UUygfD1zRi1hPKr0mu84-f8vfWgGZTEv68iJXQ2RmBbkjVbaYq-R5KOrIg_t1Js7YiBrduLlBMs63czcyyM1HjK3pvvrei9MG2TEAKmw_VCmFQ"/>
+</div>
+<span class="text-label-bold font-label-bold text-on-surface-variant mb-1">Current League</span>
+<h3 class="text-headline-md font-headline-md text-[#B8860B]">Gold Tier</h3>
+<div class="mt-4 px-3 py-1 bg-[#FFD700]/10 rounded-full border border-[#FFD700]/30 inline-flex items-center gap-1">
+<span class="material-symbols-outlined text-[#B8860B] text-sm">trending_up</span>
+<span class="text-label-bold font-label-bold text-[#B8860B]">Top 15%</span>
+</div>
+</div>
+<!-- Weekly Progress Chart -->
+<div class="md:col-span-12 bg-surface-container-lowest rounded-[24px] p-md shadow-[0px_4px_20px_rgba(15,23,42,0.05)]">
+<div class="flex justify-between items-end mb-lg">
+<div>
+<h3 class="text-headline-md font-headline-md text-on-background">Weekly Activity</h3>
+<p class="text-body-md font-body-md text-on-surface-variant">XP gained per day</p>
+</div>
+<div class="text-right">
+<span class="text-display font-display text-on-background">88%</span>
+<p class="text-label-bold font-label-bold text-primary">Completion Rate</p>
+</div>
+</div>
+<div class="h-48 w-full flex items-end justify-between gap-2 px-2">
+<!-- Monday -->
+<div class="flex flex-col items-center gap-2 flex-1 group">
+<div class="w-full max-w-[40px] bg-surface-container rounded-t-lg relative flex items-end group-hover:bg-surface-container-high transition-colors h-[40%]">
+<div class="w-full bg-primary-fixed-dim rounded-t-lg h-full opacity-60"></div>
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded pointer-events-none whitespace-nowrap">240 XP</div>
+</div>
+<span class="text-label-bold font-label-bold text-on-surface-variant">MON</span>
+</div>
+<!-- Tuesday -->
+<div class="flex flex-col items-center gap-2 flex-1 group">
+<div class="w-full max-w-[40px] bg-surface-container rounded-t-lg relative flex items-end group-hover:bg-surface-container-high transition-colors h-[65%]">
+<div class="w-full bg-primary-fixed-dim rounded-t-lg h-full opacity-80"></div>
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded pointer-events-none whitespace-nowrap">390 XP</div>
+</div>
+<span class="text-label-bold font-label-bold text-on-surface-variant">TUE</span>
+</div>
+<!-- Wednesday -->
+<div class="flex flex-col items-center gap-2 flex-1 group">
+<div class="w-full max-w-[40px] bg-surface-container rounded-t-lg relative flex items-end group-hover:bg-surface-container-high transition-colors h-[85%]">
+<div class="w-full bg-primary-container rounded-t-lg h-full"></div>
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded pointer-events-none whitespace-nowrap">510 XP</div>
+</div>
+<span class="text-label-bold font-label-bold text-on-background">WED</span>
+</div>
+<!-- Thursday -->
+<div class="flex flex-col items-center gap-2 flex-1 group">
+<div class="w-full max-w-[40px] bg-surface-container rounded-t-lg relative flex items-end group-hover:bg-surface-container-high transition-colors h-[45%]">
+<div class="w-full bg-primary-fixed-dim rounded-t-lg h-full opacity-70"></div>
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded pointer-events-none whitespace-nowrap">270 XP</div>
+</div>
+<span class="text-label-bold font-label-bold text-on-surface-variant">THU</span>
+</div>
+<!-- Friday -->
+<div class="flex flex-col items-center gap-2 flex-1 group">
+<div class="w-full max-w-[40px] bg-surface-container rounded-t-lg relative flex items-end group-hover:bg-surface-container-high transition-colors h-[90%]">
+<div class="w-full bg-primary-container rounded-t-lg h-full"></div>
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded pointer-events-none whitespace-nowrap">540 XP</div>
+</div>
+<span class="text-label-bold font-label-bold text-on-surface-variant">FRI</span>
+</div>
+<!-- Saturday -->
+<div class="flex flex-col items-center gap-2 flex-1 group">
+<div class="w-full max-w-[40px] bg-surface-container rounded-t-lg relative flex items-end group-hover:bg-surface-container-high transition-colors h-[20%]">
+<div class="w-full bg-surface-dim rounded-t-lg h-full"></div>
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded pointer-events-none whitespace-nowrap">120 XP</div>
+</div>
+<span class="text-label-bold font-label-bold text-on-surface-variant">SAT</span>
+</div>
+<!-- Sunday -->
+<div class="flex flex-col items-center gap-2 flex-1 group">
+<div class="w-full max-w-[40px] bg-surface-container rounded-t-lg relative flex items-end group-hover:bg-surface-container-high transition-colors h-[10%]">
+<div class="w-full bg-surface-dim rounded-t-lg h-full"></div>
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded pointer-events-none whitespace-nowrap">60 XP</div>
+</div>
+<span class="text-label-bold font-label-bold text-on-surface-variant">SUN</span>
+</div>
+</div>
+</div>
+<!-- Key Metrics -->
+<div class="md:col-span-12 grid grid-cols-1 md:grid-cols-3 gap-md">
+<!-- Streak -->
+<div class="bg-surface-container-lowest rounded-[24px] p-md shadow-[0px_4px_20px_rgba(15,23,42,0.05)] border-l-4 border-primary-container flex items-center gap-sm hover:scale-[1.02] transition-transform">
+<div class="w-12 h-12 bg-primary-fixed rounded-xl flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-fixed text-2xl fill">local_fire_department</span>
+</div>
+<div>
+<p class="text-label-bold font-label-bold text-on-surface-variant">Best Streak</p>
+<h4 class="text-headline-md font-headline-md text-on-background">12 days</h4>
+</div>
+</div>
+<!-- Quests -->
+<div class="bg-surface-container-lowest rounded-[24px] p-md shadow-[0px_4px_20px_rgba(15,23,42,0.05)] border-l-4 border-primary-container flex items-center gap-sm hover:scale-[1.02] transition-transform">
+<div class="w-12 h-12 bg-secondary-container rounded-xl flex items-center justify-center">
+<span class="material-symbols-outlined text-on-secondary-container text-2xl">task_alt</span>
+</div>
+<div>
+<p class="text-label-bold font-label-bold text-on-surface-variant">Quests Completed</p>
+<h4 class="text-headline-md font-headline-md text-on-background">142</h4>
+</div>
+</div>
+<!-- Avg Score -->
+<div class="bg-surface-container-lowest rounded-[24px] p-md shadow-[0px_4px_20px_rgba(15,23,42,0.05)] border-l-4 border-primary-container flex items-center gap-sm hover:scale-[1.02] transition-transform">
+<div class="w-12 h-12 bg-tertiary-container rounded-xl flex items-center justify-center">
+<span class="material-symbols-outlined text-on-tertiary-container text-2xl">analytics</span>
+</div>
+<div>
+<p class="text-label-bold font-label-bold text-on-surface-variant">Avg Daily Score</p>
+<h4 class="text-headline-md font-headline-md text-on-background">85</h4>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 shadow-[0px_-4px_20px_rgba(15,23,42,0.05)] bg-surface-container-lowest rounded-t-xl pb-safe">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 hover:bg-surface-container-high rounded-xl transition-colors" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="home">home</span>
+<span class="text-[10px] font-label-bold">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 hover:bg-surface-container-high rounded-xl transition-colors" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="calendar_today">calendar_today</span>
+<span class="text-[10px] font-label-bold">Plan</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 hover:bg-surface-container-high rounded-xl transition-colors" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="leaderboard">leaderboard</span>
+<span class="text-[10px] font-label-bold">League</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 hover:bg-surface-container-high rounded-xl transition-colors" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="account_tree">account_tree</span>
+<span class="text-[10px] font-label-bold">Skills</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-3 py-1 scale-105 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined mb-1 fill" data-icon="person">person</span>
+<span class="text-[10px] font-label-bold">Profile</span>
+</a>
+</nav>
+<style>
+        @keyframes shimmer {
+            100% {
+                transform: translateX(100%);
+            }
+        }
+        
+        /* Safe area support for iOS */
+        .pb-safe {
+            padding-bottom: env(safe-area-inset-bottom, 16px);
+        }
+    </style>
+</body></html>

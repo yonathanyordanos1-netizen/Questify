@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI Daily Review - Questify</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-container": "#5f1900",
+                        "on-primary-fixed": "#390c00",
+                        "outline": "#8d7168",
+                        "tertiary": "#515f74",
+                        "on-secondary": "#ffffff",
+                        "primary-fixed-dim": "#ffb59d",
+                        "surface-container": "#eceef1",
+                        "on-tertiary-container": "#243245",
+                        "surface-container-high": "#e6e8eb",
+                        "outline-variant": "#e1bfb5",
+                        "surface-tint": "#ab3500",
+                        "on-tertiary": "#ffffff",
+                        "inverse-on-surface": "#eff1f4",
+                        "tertiary-fixed-dim": "#b9c7df",
+                        "tertiary-fixed": "#d5e3fc",
+                        "surface-container-highest": "#e0e3e6",
+                        "secondary": "#565e74",
+                        "on-error": "#ffffff",
+                        "on-surface": "#191c1e",
+                        "inverse-primary": "#ffb59d",
+                        "on-secondary-fixed": "#131b2e",
+                        "on-error-container": "#93000a",
+                        "tertiary-container": "#8c9ab1",
+                        "on-primary-fixed-variant": "#832600",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "primary-container": "#ff6b35",
+                        "secondary-container": "#dae2fd",
+                        "error-container": "#ffdad6",
+                        "surface-container-low": "#f2f4f7",
+                        "on-surface-variant": "#594139",
+                        "surface-variant": "#e0e3e6",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "error": "#ba1a1a",
+                        "primary": "#ab3500",
+                        "on-tertiary-fixed": "#0d1c2e",
+                        "on-primary": "#ffffff",
+                        "surface-dim": "#d8dadd",
+                        "on-tertiary-fixed-variant": "#3a485b",
+                        "background": "#F4F6F9",
+                        "surface-bright": "#f7f9fc",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#191c1e",
+                        "primary-fixed": "#ffdbd0",
+                        "on-secondary-container": "#5c647a",
+                        "inverse-surface": "#2d3133",
+                        "surface": "#f7f9fc",
+                        "secondary-fixed": "#dae2fd"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "8px",
+                        "xl": "64px",
+                        "container-max": "1200px",
+                        "base": "4px",
+                        "gutter": "16px",
+                        "md": "24px",
+                        "margin-mobile": "20px",
+                        "lg": "40px",
+                        "sm": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "display": ["Plus Jakarta Sans"],
+                        "button": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "label-bold": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "700" }],
+                        "display": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "button": ["16px", { "lineHeight": "1", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "fontWeight": "800" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-bold": ["14px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "800" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #F4F6F9; }
+        .shadow-soft { box-shadow: 0px 4px 20px rgba(15, 23, 42, 0.05); }
+    </style>
+</head>
+<body class="font-body-md text-on-surface bg-background antialiased min-h-screen flex flex-col items-center">
+<!-- Top App Bar -->
+<header class="bg-background dark:bg-background docked full-width top-0 w-full z-50">
+<div class="flex justify-between items-center w-full px-margin-mobile h-16 max-w-container-max mx-auto">
+<div class="flex items-center gap-2">
+<button class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="text-headline-md font-headline-md font-extrabold text-primary dark:text-primary-fixed-dim tracking-tight">Today's Review</h1>
+</div>
+<button class="hover:opacity-80 transition-opacity text-on-surface-variant dark:text-outline p-2 rounded-full hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="w-full max-w-container-max px-margin-mobile pb-xl pt-sm flex flex-col gap-lg md:gap-xl">
+<!-- Score Section -->
+<section class="flex flex-col items-center justify-center mt-sm">
+<div class="relative w-48 h-48 md:w-64 md:h-64 flex items-center justify-center rounded-full bg-surface-container-lowest shadow-soft">
+<!-- Circular Progress SVG -->
+<svg class="absolute inset-0 w-full h-full transform -rotate-90" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="none" r="45" stroke="#e0e3e6" stroke-width="8"></circle>
+<circle class="transition-all duration-1000 ease-out" cx="50" cy="50" fill="none" r="45" stroke="#FF6B35" stroke-dasharray="282.7" stroke-dashoffset="36.7" stroke-linecap="round" stroke-width="8"></circle>
+</svg>
+<div class="text-center z-10 flex flex-col items-center">
+<span class="text-display font-display text-primary">8.7</span>
+<span class="text-label-bold font-label-bold text-on-surface-variant uppercase tracking-widest mt-1">/ 10</span>
+</div>
+</div>
+<p class="mt-md text-body-lg font-body-lg text-on-surface-variant text-center max-w-md">Excellent day! You're making solid progress on your long-term goals.</p>
+</section>
+<!-- QUBI Feedback Card -->
+<section class="bg-surface-container-lowest rounded-[24px] shadow-soft p-md relative overflow-hidden flex flex-col sm:flex-row items-center gap-md">
+<div class="w-24 h-24 sm:w-32 sm:h-32 flex-shrink-0 bg-surface-container rounded-full overflow-hidden border-4 border-surface-container-lowest shadow-sm relative z-10">
+<img class="w-full h-full object-cover" data-alt="A detailed digital illustration of QUBI, an energetic AI mascot character with a modern-gamified aesthetic. QUBI is a cute, floating robot-like entity with a bright, expressive face, wearing cool pixelated sunglasses and oversized black headphones. The mascot is gesturing enthusiastically with a 'thumbs up' pose, radiating a positive, encouraging personality. The background is a crisp, solid white to maintain a clean, minimal look, perfectly integrating with a light-mode high-contrast UI design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6OeWYjsrtOn81Jr-v3H3vDc8RbS0AhTvNh-X2eD-HOqS2c-vkJyiK7PkfkAkmPyxILVRtCR_3Fm65y8wmkB96d74WLk5-_liKmtDEUjXHlM3MeYdV967VgQYA6QLoDjMGWfdJmhlTjSxAajimuUTXGa8g2rGc7IZG7aAZzESq-uUHEux5q4sV_DnaPAo_wH-AYNkCtgsnS6nHgMKixTjbuctyAWZYura6zZEO9JQZKI7-OSc_l8LmLQe_zp7uavnSWsw"/>
+</div>
+<div class="flex-1 relative z-10 text-center sm:text-left">
+<h3 class="text-headline-md font-headline-md text-on-surface mb-xs">QUBI says:</h3>
+<p class="text-body-md font-body-md text-on-surface-variant">"Great work today. You completed 4 of 5 quests and stayed consistent with your fitness goal. Keep this momentum!"</p>
+</div>
+<!-- Decorative Accent -->
+<div class="absolute left-0 top-0 bottom-0 w-2 bg-primary-container z-0 rounded-l-[24px]"></div>
+</section>
+<!-- Breakdown Bento Grid -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-sm">
+<!-- Quests -->
+<div class="bg-surface-container-lowest rounded-[24px] shadow-soft p-md flex flex-col items-center justify-center gap-xs">
+<span class="material-symbols-outlined text-[32px] text-primary-container mb-1" data-icon="task_alt">task_alt</span>
+<span class="text-headline-md font-headline-md text-on-surface">4/5</span>
+<span class="text-label-bold font-label-bold text-on-surface-variant text-center">Quests Completed</span>
+</div>
+<!-- XP -->
+<div class="bg-surface-container-lowest rounded-[24px] shadow-soft p-md flex flex-col items-center justify-center gap-xs relative overflow-hidden">
+<div class="absolute -right-4 -top-4 w-16 h-16 bg-primary-fixed opacity-50 rounded-full blur-xl"></div>
+<span class="material-symbols-outlined text-[32px] text-primary mb-1" data-icon="stars">stars</span>
+<span class="text-headline-md font-headline-md text-primary">+340</span>
+<span class="text-label-bold font-label-bold text-on-surface-variant text-center">XP Earned</span>
+</div>
+<!-- Streak -->
+<div class="bg-surface-container-lowest rounded-[24px] shadow-soft p-md flex flex-col items-center justify-center gap-xs">
+<span class="material-symbols-outlined text-[32px] text-primary-container mb-1" data-icon="local_fire_department">local_fire_department</span>
+<span class="text-headline-md font-headline-md text-on-surface">12 <span class="text-body-md font-body-md font-normal">days</span></span>
+<span class="text-label-bold font-label-bold text-on-surface-variant text-center">Current Streak</span>
+</div>
+</section>
+<!-- Tomorrow's Focus -->
+<section class="bg-surface-container-lowest rounded-[24px] shadow-soft p-md border-l-4 border-tertiary-container">
+<div class="flex items-center gap-2 mb-sm">
+<span class="material-symbols-outlined text-tertiary-container" data-icon="lightbulb">lightbulb</span>
+<h3 class="text-headline-md font-headline-md text-on-surface text-lg">Tomorrow's Focus</h3>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant">Try to start your Study Session 15 mins earlier to maintain a smoother morning flow.</p>
+</section>
+<!-- Action Button -->
+<div class="mt-auto pt-lg w-full max-w-md mx-auto pb-lg">
+<button class="w-full bg-primary-container text-white py-4 px-6 rounded-[16px] text-button font-button shadow-lg hover:scale-[1.02] transition-transform duration-200 flex items-center justify-center gap-2">
+<span>VIEW TOMORROW'S PLAN</span>
+<span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</main>
+</body></html>

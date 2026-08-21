@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Monochrome notification small-icon (must be solid white on transparent).
+     A lightning bolt matches Questify's XP/zap branding. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M13,2L3.6,13.4h5.7L9.7,22l8.7,-11.6h-5.7L13,2z" />
+</vector>

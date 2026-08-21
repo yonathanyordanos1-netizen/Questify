@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Questify — Go Legend</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --coral:#FF6B35;
+    --coral-deep:#E2551F;
+    --peach:#F2F2F3;
+    --sage:#6B7280;
+    --canvas:#FAFAFA;
+    --ink:#1A1B1E;
+    --muted:#6B7280;
+    --card-border:#E7E7E8;
+    --white:#FFFFFF;
+    --display:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:var(--display);
+    background:#ECECED;
+    min-height:100vh;
+    display:grid;
+    place-items:center;
+    gap:18px;
+    padding:24px;
+  }
+  .stage-label{
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:#6B7280;
+    text-align:center;
+    margin-top:-8px;
+  }
+  .phone{
+    width:390px;
+    height:844px;
+    background:#1A1A1B;
+    border-radius:54px;
+    padding:10px;
+    box-shadow:0 34px 70px rgba(26,27,30,.28),0 6px 16px rgba(26,27,30,.10);
+    position:relative;
+  }
+  .screen{
+    width:100%;
+    height:100%;
+    border-radius:46px;
+    overflow:hidden;
+    background:#1A1B1E;
+    display:flex;
+    flex-direction:column;
+    position:relative;
+    color:var(--white);
+  }
+  .island{
+    position:absolute;
+    top:20px;
+    left:50%;
+    transform:translateX(-50%);
+    width:126px;
+    height:34px;
+    background:#000;
+    border-radius:20px;
+    z-index:6;
+  }
+  .statusbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 28px 0;
+    color:var(--white);
+    z-index:5;
+  }
+  .statusbar .time{font-size:15px;font-weight:700;letter-spacing:.02em}
+  .status-icons{display:flex;align-items:center;gap:6px}
+  .status-icons svg{display:block}
+  .topnav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 20px 0;
+  }
+  .back-btn{
+    width:44px;
+    height:44px;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,.18);
+    background:rgba(255,255,255,.08);
+    display:grid;
+    place-items:center;
+    cursor:pointer;
+    color:var(--white);
+    text-decoration:none;
+    transition:transform .15s ease,background .15s ease;
+  }
+  .back-btn:hover{background:rgba(255,255,255,.14)}
+  .back-btn:active{transform:scale(.95)}
+  .pay-body{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    padding:10px 24px 24px;
+    overflow:hidden;
+  }
+  .hero-badge{
+    align-self:center;
+    width:96px;
+    height:96px;
+    border-radius:32px;
+    background:var(--coral);
+    display:grid;
+    place-items:center;
+    box-shadow:0 18px 40px rgba(26,27,30,.12), inset 0 2px 0 rgba(255,255,255,.35);
+    margin-bottom:18px;
+    color:#fff;
+  }
+  .hero-badge svg{display:block}
+  .pay-title{
+    font-size:30px;
+    font-weight:800;
+    letter-spacing:-.02em;
+    text-align:center;
+    line-height:1.15;
+    margin-bottom:8px;
+  }
+  .pay-title em{font-style:normal;color:var(--peach)}
+  .pay-sub{
+    font-size:14px;
+    font-weight:500;
+    color:rgba(255,255,255,.66);
+    text-align:center;
+    line-height:1.5;
+    margin-bottom:20px;
+  }
+  .billing-toggle{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+    margin-bottom:14px;
+  }
+  .bill-pill{
+    height:40px;
+    padding:0 18px;
+    border-radius:999px;
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.16);
+    color:rgba(255,255,255,.7);
+    font-family:var(--display);
+    font-size:14px;
+    font-weight:700;
+    cursor:pointer;
+    transition:background .15s ease,color .15s ease;
+  }
+  .bill-pill.on{
+    background:var(--coral);
+    border-color:var(--coral);
+    color:#fff;
+  }
+  .save-chip{
+    font-size:12px;
+    font-weight:800;
+    color:#fff;
+    background:var(--sage);
+    border-radius:999px;
+    padding:6px 12px;
+  }
+  .price-card{
+    background:rgba(255,255,255,.1);
+    border:1px solid rgba(255,255,255,.2);
+    border-radius:24px;
+    padding:22px;
+    margin-bottom:18px;
+    backdrop-filter:blur(6px);
+  }
+  .price-row{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    margin-bottom:6px;
+  }
+  .price-plan{font-size:15px;font-weight:700;color:rgba(255,255,255,.8)}
+  .price-amt{font-size:34px;font-weight:800;letter-spacing:-.02em}
+  .price-amt small{font-size:14px;font-weight:600;color:rgba(255,255,255,.55)}
+  .price-note{
+    font-size:13px;
+    font-weight:600;
+    color:rgba(255,255,255,.55);
+    border-top:1px solid rgba(255,255,255,.14);
+    padding-top:14px;
+    margin-top:12px;
+  }
+  .feat-list{
+    list-style:none;
+    margin-bottom:20px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .feat-list li{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:14px;
+    font-weight:600;
+    color:rgba(255,255,255,.85);
+  }
+  .feat-list .f-icon{
+    width:24px;
+    height:24px;
+    border-radius:8px;
+    background:rgba(26,27,30,.06);
+    color:var(--sage);
+    display:grid;
+    place-items:center;
+    flex-shrink:0;
+  }
+  .feat-list .f-icon svg{display:block}
+  .cta-wrap{display:flex;flex-direction:column;gap:10px}
+  .pay-btn{
+    width:100%;
+    height:52px;
+    border:0;
+    border-radius:999px;
+    background:var(--coral);
+    color:var(--white);
+    font-family:var(--display);
+    font-size:17px;
+    font-weight:700;
+    cursor:pointer;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 4px 0 var(--coral-deep);
+    transition:transform .15s ease,box-shadow .15s ease;
+  }
+  .pay-btn:hover{filter:brightness(1.05)}
+  .pay-btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--coral-deep)}
+  .skip-link{
+    text-align:center;
+    font-size:14px;
+    font-weight:700;
+    color:rgba(255,255,255,.55);
+    text-decoration:none;
+    padding:8px;
+  }
+  .skip-link:hover{color:rgba(255,255,255,.85)}
+</style>
+</head>
+<body>
+  <div class="phone" data-od-id="paywall-screen">
+    <div class="screen">
+      <div class="island"></div>
+      <div class="statusbar" data-od-id="paywall-status">
+        <span class="time">9:41</span>
+        <span class="status-icons" aria-hidden="true">
+          <svg width="18" height="12" viewBox="0 0 18 12" fill="none">
+            <rect x="0" y="8" width="3" height="4" rx="1" fill="currentColor"/>
+            <rect x="5" y="5" width="3" height="7" rx="1" fill="currentColor"/>
+            <rect x="10" y="2" width="3" height="10" rx="1" fill="currentColor"/>
+            <rect x="15" y="0" width="3" height="12" rx="1" fill="currentColor" opacity=".35"/>
+          </svg>
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
+            <rect x="0" y="6" width="10" height="6" rx="2" fill="currentColor"/>
+            <path d="M12 3.5a5 5 0 0 1 0 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            <path d="M14 1a9 9 0 0 1 0 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          <svg width="26" height="12" viewBox="0 0 26 12" fill="none">
+            <rect x="0" y="1" width="22" height="10" rx="3" fill="currentColor"/>
+            <path d="M24 4v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            <rect x="2" y="3" width="16" height="6" rx="1.5" fill="var(--coral)"/>
+          </svg>
+        </span>
+      </div>
+      <div class="topnav">
+        <a class="back-btn" data-od-id="paywall-back" href="questify-account.html" aria-label="Back to create account">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <span class="step-badge" style="background:rgba(255,255,255,.12);color:var(--white)">Step 18 of 18</span>
+      </div>
+      <div class="pay-body">
+        <div class="hero-badge" data-od-id="paywall-hero" aria-hidden="true">
+          <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+            <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+            <path d="M4 22h16"/>
+            <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+            <path d="M14 14.66V17c0 .55.47.98.97 1.21 1.18.54 2.03 2.03 2.03 3.79"/>
+            <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
+          </svg>
+        </div>
+        <h1 class="pay-title" data-od-id="paywall-title">Go <em>Legend</em> on autopilot.</h1>
+        <p class="pay-sub" data-od-id="paywall-sub">7 days free, then unlock every quest. Cancel anytime — your streak survives.</p>
+        <div class="billing-toggle" data-od-id="paywall-billing">
+          <button class="bill-pill on" data-od-id="bill-monthly">Monthly</button>
+          <button class="bill-pill" data-od-id="bill-yearly">Yearly</button>
+          <span class="save-chip">SAVE 50%</span>
+        </div>
+        <div class="price-card" data-od-id="paywall-price">
+          <div class="price-row">
+            <span class="price-plan">Questify Pro</span>
+            <span class="price-amt">$4.99 <small>/ month</small></span>
+          </div>
+          <div class="price-note">Billed annually · $59.88/yr · 7-day free trial included</div>
+        </div>
+        <ul class="feat-list" data-od-id="paywall-features">
+          <li>
+            <span class="f-icon" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 12l5 5L20 6"/>
+              </svg>
+            </span>
+            Unlimited habit quests + AI photo verification
+          </li>
+          <li>
+            <span class="f-icon" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 12l5 5L20 6"/>
+              </svg>
+            </span>
+            League rivalries, weekly promotion zones
+          </li>
+          <li>
+            <span class="f-icon" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 12l5 5L20 6"/>
+              </svg>
+            </span>
+            Streak shields + smart AI schedule builder
+          </li>
+          <li>
+            <span class="f-icon" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 12l5 5L20 6"/>
+              </svg>
+            </span>
+            Questie coach voice + deep analytics
+          </li>
+        </ul>
+        <div class="cta-wrap">
+          <a class="pay-btn" data-od-id="paywall-cta" href="questify-dashboard.html">Start 7-Day Free Trial ➔</a>
+          <a class="skip-link" data-od-id="paywall-skip" href="questify-dashboard.html">Skip for now — stay on Free</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="stage-label">Questify · Paywall · Step 18 of 18 · 390 × 844</p>
+  <script>
+    (function(){
+      var monthly = document.querySelector('[data-od-id="bill-monthly"]');
+      var yearly = document.querySelector('[data-od-id="bill-yearly"]');
+      var amt = document.querySelector('[data-od-id="paywall-price"] .price-amt');
+      var note = document.querySelector('[data-od-id="paywall-price"] .price-note');
+      var chip = document.querySelector('.save-chip');
+      function set(plan){
+        monthly.classList.toggle('on', plan==='m');
+        yearly.classList.toggle('on', plan==='y');
+        if(plan==='y'){
+          amt.innerHTML = '$2.49 <small>/ month</small>';
+          note.textContent = 'Billed annually · $29.88/yr · 7-day free trial included';
+        }else{
+          amt.innerHTML = '$4.99 <small>/ month</small>';
+          note.textContent = 'Billed monthly · cancel anytime · 7-day free trial included';
+        }
+      }
+      monthly.addEventListener('click', function(){set('m')});
+      yearly.addEventListener('click', function(){set('y')});
+      chip.addEventListener('click', function(){set('y')});
+    })();
+  </script>
+</body>
+</html>

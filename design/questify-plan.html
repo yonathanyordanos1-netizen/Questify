@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Questify — My Quest Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --coral:#FF6B35;
+    --coral-deep:#E2551F;
+    --peach:#F2F2F3;
+    --sage:#6B7280;
+    --periwinkle:#9AA0A6;
+    --canvas:#FAFAFA;
+    --ink:#1A1B1E;
+    --muted:#6B7280;
+    --card-border:#E7E7E8;
+    --white:#FFFFFF;
+    --display:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:var(--display);
+    background:#ECECED;
+    min-height:100vh;
+    display:grid;
+    place-items:center;
+    gap:18px;
+    padding:24px;
+  }
+  .stage-label{
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:#6B7280;
+    text-align:center;
+    margin-top:-8px;
+  }
+  .phone{
+    width:390px;
+    height:844px;
+    background:#1A1A1B;
+    border-radius:54px;
+    padding:10px;
+    box-shadow:0 34px 70px rgba(26,27,30,.28),0 6px 16px rgba(26,27,30,.10);
+    position:relative;
+  }
+  .screen{
+    width:100%;
+    height:100%;
+    border-radius:46px;
+    overflow:hidden;
+    background:var(--canvas);
+    display:flex;
+    flex-direction:column;
+    position:relative;
+  }
+  .island{
+    position:absolute;
+    top:20px;
+    left:50%;
+    transform:translateX(-50%);
+    width:126px;
+    height:34px;
+    background:#000;
+    border-radius:20px;
+    z-index:6;
+  }
+  .statusbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 28px 0;
+    color:var(--ink);
+    z-index:5;
+  }
+  .statusbar .time{font-size:15px;font-weight:700;letter-spacing:.02em}
+  .status-icons{display:flex;align-items:center;gap:6px}
+  .status-icons svg{display:block}
+  .plan-body{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    padding:18px 20px 96px;
+    overflow:hidden;
+  }
+  .plan-title{font-size:22px;font-weight:800;letter-spacing:-.02em;color:var(--ink);margin-bottom:6px}
+  .plan-sub{font-size:13px;font-weight:600;color:var(--muted);margin-bottom:20px;line-height:1.5}
+  .filters{display:flex;gap:8px;margin-bottom:18px}
+  .filter-pill{
+    flex:1;
+    height:38px;
+    padding:0 12px;
+    border-radius:999px;
+    border:1.5px solid var(--card-border);
+    background:var(--white);
+    color:var(--muted);
+    font-family:var(--display);
+    font-size:12px;
+    font-weight:800;
+    cursor:pointer;
+    transition:all .15s ease;
+  }
+  .filter-pill.on{
+    border-color:var(--coral);
+    background:#FFFFFF;
+    color:var(--coral-deep);
+  }
+  .db-list{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    overflow-y:auto;
+    padding-bottom:8px;
+  }
+  .db-row{
+    display:flex;
+    align-items:flex-start;
+    gap:14px;
+    background:var(--white);
+    border:1px solid var(--card-border);
+    border-radius:18px;
+    padding:16px;
+  }
+  .db-ic{
+    width:42px;
+    height:42px;
+    border-radius:13px;
+    background:rgba(26,27,30,.05);
+    color:var(--coral);
+    display:grid;
+    place-items:center;
+    flex-shrink:0;
+  }
+  .db-ic svg{display:block}
+  .db-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:10px}
+  .db-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .db-txt{flex:1;min-width:0}
+  .db-name{font-size:15px;font-weight:800;color:var(--ink);letter-spacing:-.01em}
+  .db-meta{display:flex;align-items:center;gap:8px;margin-top:5px}
+  .freq-chip{
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    color:var(--coral-deep);
+    background:rgba(26,27,30,.04);
+    border-radius:7px;
+    padding:3px 8px;
+  }
+  .rem-chip{
+    font-size:11px;
+    font-weight:700;
+    color:var(--muted);
+    display:flex;
+    align-items:center;
+    gap:5px;
+  }
+  .proof-toggle{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding-top:10px;
+    border-top:1px dashed var(--card-border);
+    font-size:12px;
+    font-weight:700;
+    color:var(--muted);
+  }
+  .switch{
+    width:42px;
+    height:24px;
+    border-radius:999px;
+    background:var(--coral);
+    position:relative;
+    cursor:pointer;
+    transition:background .2s ease;
+  }
+  .switch::after{
+    content:"";
+    position:absolute;
+    top:3px;right:3px;
+    width:18px;height:18px;
+    border-radius:999px;
+    background:#fff;
+    box-shadow:0 1px 3px rgba(0,0,0,.25);
+    transition:right .2s ease,left .2s ease;
+  }
+  .switch.off{background:#D4D4D6}
+  .switch.off::after{right:auto;left:3px}
+  .db-btn{
+    width:34px;
+    height:34px;
+    border:0;
+    background:var(--canvas);
+    border-radius:10px;
+    color:var(--muted);
+    cursor:pointer;
+    display:grid;
+    place-items:center;
+    font-size:16px;
+    font-weight:800;
+    flex-shrink:0;
+  }
+  .db-btn:hover{background:#ECECED}
+  .add-row{
+    margin-top:4px;
+    height:56px;
+    border-radius:18px;
+    border:2px dashed #D8CFC2;
+    background:transparent;
+    color:var(--coral-deep);
+    font-family:var(--display);
+    font-size:15px;
+    font-weight:800;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:9px;
+  }
+  .add-row:hover{border-color:var(--coral);background:#FFFFFF}
+  .tabbar{
+    position:absolute;
+    left:16px;
+    right:16px;
+    bottom:24px;
+    display:flex;
+    align-items:center;
+    z-index:4;
+    pointer-events:none;
+  }
+  .tabbar > *{pointer-events:auto}
+  .pill{
+    display:flex;
+    align-items:center;
+    justify-content:space-evenly;
+    gap:4px;
+    padding:8px;
+    width:100%;
+    border-radius:999px;
+    background:rgba(15,23,42,.92);
+    border:1px solid rgba(255,255,255,.1);
+    box-shadow:0 18px 40px rgba(15,23,42,.35);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+  }
+  .tab{
+    display:grid;
+    place-items:center;
+    width:44px;
+    height:44px;
+    border-radius:999px;
+    text-decoration:none;
+    color:rgba(255,255,255,.7);
+    transition:color .15s ease,background .15s ease,transform .15s ease;
+  }
+  .tab.active{
+    background:var(--coral);
+    color:#fff;
+    box-shadow:0 6px 16px rgba(26,27,30,.12);
+  }
+  .tab:active{transform:scale(.92)}
+  .tab svg{display:block}
+  .nav-sep{
+    width:1px;
+    height:28px;
+    background:rgba(255,255,255,.14);
+    margin:0 6px;
+    flex-shrink:0;
+  }
+  .qfab{
+    width:48px;
+    height:48px;
+    border-radius:999px;
+    background:var(--coral);
+    border:1px solid var(--coral);
+    color:#fff;
+    display:grid;
+    place-items:center;
+    text-decoration:none;
+    box-shadow:0 8px 20px rgba(255,107,53,.4);
+    flex-shrink:0;
+    transition:transform .15s ease;
+  }
+  .qfab:active{transform:scale(.92)}
+  .qfab svg{display:block}
+  .qfab.current{
+    box-shadow:0 0 0 4px rgba(255,107,53,.15),0 8px 20px rgba(255,107,53,.4);
+  }
+  .sheet{
+    position:absolute;
+    left:0;right:0;bottom:0;
+    background:var(--white);
+    border-radius:28px 28px 0 0;
+    padding:22px 24px 30px;
+    z-index:8;
+    transform:translateY(105%);
+    transition:transform .35s cubic-bezier(.22,1,.36,1);
+    box-shadow:0 -10px 40px rgba(26,27,30,.15);
+  }
+  .sheet.open{transform:translateY(0)}
+  .grabber{
+    width:44px;height:5px;border-radius:999px;background:var(--card-border);
+    margin:0 auto 16px;
+  }
+  .sheet-title{font-size:17px;font-weight:800;color:var(--ink);margin-bottom:14px}
+  .field{margin-bottom:12px}
+  .field label{font-size:12px;font-weight:800;color:var(--muted);display:block;margin-bottom:6px}
+  .field input{
+    width:100%;
+    height:46px;
+    border:1.5px solid var(--card-border);
+    border-radius:12px;
+    padding:0 14px;
+    font-family:var(--display);
+    font-size:14px;
+    font-weight:600;
+    color:var(--ink);
+    background:var(--canvas);
+  }
+  .field input:focus{outline:none;border-color:var(--coral)}
+  .pill-row{display:flex;gap:8px}
+  .mini-pill{
+    flex:1;
+    height:40px;
+    border-radius:999px;
+    border:1.5px solid var(--card-border);
+    background:var(--white);
+    color:var(--muted);
+    font-family:var(--display);
+    font-size:13px;
+    font-weight:800;
+    cursor:pointer;
+  }
+  .mini-pill.on{border-color:var(--coral);background:#FFFFFF;color:var(--coral-deep)}
+  .switch-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:10px 2px;
+  }
+  .switch-row span{font-size:14px;font-weight:700;color:var(--ink)}
+  .sheet-btn{
+    width:100%;
+    height:50px;
+    border:0;
+    border-radius:999px;
+    background:var(--coral);
+    color:#fff;
+    font-family:var(--display);
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+    box-shadow:0 4px 0 var(--coral-deep);
+    margin-top:8px;
+  }
+  .sheet-btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--coral-deep)}
+  /* ---- Entrance & micro animations ---- */
+  @keyframes od-fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes od-pop{0%{opacity:0;transform:scale(.9)}70%{opacity:1;transform:scale(1.02)}100%{opacity:1;transform:scale(1)}}
+  @keyframes od-tabbarIn{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+  .plan-body > *{animation:od-fadeUp .5s cubic-bezier(.22,1,.36,1) both}
+  .plan-title{animation-delay:.05s}
+  .plan-sub{animation-delay:.12s}
+  .filters{animation-delay:.2s}
+  .db-list{animation-delay:.3s}
+  .db-row{animation:od-fadeUp .45s cubic-bezier(.22,1,.36,1) both}
+  .db-row:nth-child(1){animation-delay:.4s}
+  .db-row:nth-child(2){animation-delay:.48s}
+  .db-row:nth-child(3){animation-delay:.56s}
+  .db-row:nth-child(4){animation-delay:.64s}
+  .add-row{animation:od-fadeUp .45s cubic-bezier(.22,1,.36,1) .72s both}
+  .filter-pill{transition:all .25s cubic-bezier(.22,1,.36,1)}
+  .filter-pill:hover{transform:translateY(-1px)}
+  .switch{transition:background .25s ease}
+  .switch::after{transition:transform .25s cubic-bezier(.22,1,.36,1)}
+  .switch.off::after{transition:transform .25s cubic-bezier(.22,1,.36,1)}
+  .tabbar{animation:od-tabbarIn .55s cubic-bezier(.22,1,.36,1) .25s both}
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important}
+  }
+</style>
+</head>
+<body>
+  <div class="phone" data-od-id="plan-screen">
+    <div class="screen">
+      <div class="island"></div>
+      <div class="statusbar" data-od-id="plan-status">
+        <span class="time">9:41</span>
+        <span class="status-icons" aria-hidden="true">
+          <svg width="18" height="12" viewBox="0 0 18 12" fill="none">
+            <rect x="0" y="8" width="3" height="4" rx="1" fill="currentColor"/>
+            <rect x="5" y="5" width="3" height="7" rx="1" fill="currentColor"/>
+            <rect x="10" y="2" width="3" height="10" rx="1" fill="currentColor"/>
+            <rect x="15" y="0" width="3" height="12" rx="1" fill="currentColor" opacity=".35"/>
+          </svg>
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
+            <rect x="0" y="6" width="10" height="6" rx="2" fill="currentColor"/>
+            <path d="M12 3.5a5 5 0 0 1 0 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            <path d="M14 1a9 9 0 0 1 0 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          <svg width="26" height="12" viewBox="0 0 26 12" fill="none">
+            <rect x="0" y="1" width="22" height="10" rx="3" fill="currentColor"/>
+            <path d="M24 4v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            <rect x="2" y="3" width="16" height="6" rx="1.5" fill="var(--coral)"/>
+          </svg>
+        </span>
+      </div>
+      <div class="plan-body">
+        <h1 class="plan-title" data-od-id="plan-title">My Quest Plan</h1>
+        <p class="plan-sub" data-od-id="plan-sub">Manage your active habits, archives and custom schedule.</p>
+        <div class="filters" data-od-id="plan-filters">
+          <button class="filter-pill on" data-od-id="filter-active" data-view="active">Active Habits</button>
+          <button class="filter-pill" data-od-id="filter-archived" data-view="archived">Archived</button>
+          <button class="filter-pill" data-od-id="filter-schedule" data-view="schedule">Custom Schedule</button>
+        </div>
+        <div class="db-list" data-od-id="plan-list">
+          <div class="db-row" data-view="active">
+            <span class="db-ic" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6.5 6.5l11 11M21 21l-1-1M3 3l1 1M18 22l4-4M2 6l4-4M3 10l7-7M14 21l7-7"/>
+              </svg>
+            </span>
+            <div class="db-main">
+              <div class="db-head">
+                <span class="db-txt">
+                  <div class="db-name">Gym</div>
+                  <div class="db-meta">
+                    <span class="freq-chip">Daily</span>
+                    <span class="rem-chip">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                      07:00
+                    </span>
+                  </div>
+                </span>
+                <button class="db-btn" data-od-id="row-menu" aria-label="Row menu">⋮</button>
+              </div>
+              <span class="proof-toggle">
+                <span>Photo proof</span>
+                <span class="switch" data-od-id="sw-gym" role="switch" aria-checked="true" aria-label="Photo proof for Gym"></span>
+              </span>
+            </div>
+          </div>
+          <div class="db-row" data-view="active">
+            <span class="db-ic" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+              </svg>
+            </span>
+            <div class="db-main">
+              <div class="db-head">
+                <span class="db-txt">
+                  <div class="db-name">Reading</div>
+                  <div class="db-meta">
+                    <span class="freq-chip">Daily</span>
+                    <span class="rem-chip">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                      18:00
+                    </span>
+                  </div>
+                </span>
+                <button class="db-btn" data-od-id="row-menu" aria-label="Row menu">⋮</button>
+              </div>
+              <span class="proof-toggle">
+                <span>Photo proof</span>
+                <span class="switch" data-od-id="sw-read" role="switch" aria-checked="true" aria-label="Photo proof for Reading"></span>
+              </span>
+            </div>
+          </div>
+          <div class="db-row" data-view="active">
+            <span class="db-ic" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3l1.9 5.8a2 2 0 0 0 1.3 1.3L21 12l-5.8 1.9a2 2 0 0 0-1.3 1.3L12 21l-1.9-5.8a2 2 0 0 0-1.3-1.3L3 12l5.8-1.9a2 2 0 0 0 1.3-1.3z"/>
+              </svg>
+            </span>
+            <div class="db-main">
+              <div class="db-head">
+                <span class="db-txt">
+                  <div class="db-name">Clean Room</div>
+                  <div class="db-meta">
+                    <span class="freq-chip">Daily</span>
+                    <span class="rem-chip">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                      20:00
+                    </span>
+                  </div>
+                </span>
+                <button class="db-btn" data-od-id="row-menu" aria-label="Row menu">⋮</button>
+              </div>
+              <span class="proof-toggle">
+                <span>Photo proof</span>
+                <span class="switch" data-od-id="sw-clean" role="switch" aria-checked="true" aria-label="Photo proof for Clean Room"></span>
+              </span>
+            </div>
+          </div>
+          <div class="db-row" data-view="active">
+            <span class="db-ic" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2.7S6 9 6 14a6 6 0 0 0 12 0c0-5-6-11.3-6-11.3z"/>
+                <path d="M8.5 14a3.5 3.5 0 0 0 3.5 3.5"/>
+              </svg>
+            </span>
+            <div class="db-main">
+              <div class="db-head">
+                <span class="db-txt">
+                  <div class="db-name">Hydrate</div>
+                  <div class="db-meta">
+                    <span class="freq-chip">Daily</span>
+                    <span class="rem-chip">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                      12:00
+                    </span>
+                  </div>
+                </span>
+                <button class="db-btn" data-od-id="row-menu" aria-label="Row menu">⋮</button>
+              </div>
+              <span class="proof-toggle">
+                <span>Photo proof</span>
+                <span class="switch off" data-od-id="sw-water" role="switch" aria-checked="false" aria-label="Photo proof for Hydrate"></span>
+              </span>
+            </div>
+          </div>
+          <div class="db-row" data-view="archived" hidden>
+            <span class="db-ic" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 8h16M4 4h16v4H4zM5 8v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8M10 12h4"/>
+              </svg>
+            </span>
+            <div class="db-main">
+              <div class="db-head">
+                <span class="db-txt">
+                  <div class="db-name">Meditation</div>
+                  <div class="db-meta">
+                    <span class="freq-chip" style="color:var(--muted);background:#ECECED">Archived</span>
+                    <span class="rem-chip">paused</span>
+                  </div>
+                </span>
+                <button class="db-btn" data-od-id="row-menu" aria-label="Row menu">⋮</button>
+              </div>
+            </div>
+          </div>
+          <div class="db-row" data-view="schedule" hidden>
+            <span class="db-ic" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+              </svg>
+            </span>
+            <div class="db-main">
+              <div class="db-head">
+                <span class="db-txt">
+                  <div class="db-name">AI Ideal Day</div>
+                  <div class="db-meta">
+                    <span class="freq-chip">Schedule</span>
+                    <span class="rem-chip">4 blocks · 07:00–20:00</span>
+                  </div>
+                </span>
+                <span class="db-btn" data-od-id="row-open" aria-hidden="true">➔</span>
+              </div>
+            </div>
+          </div>
+          <button class="add-row" data-od-id="plan-add">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+            Add custom habit
+          </button>
+        </div>
+      </div>
+      <nav class="tabbar" data-od-id="tabbar" aria-label="Primary navigation">
+        <div class="pill">
+          <a class="tab" data-od-id="tab-dash" href="questify-dashboard.html" aria-label="Home">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 10.5 12 3l9 7.5V20a2 2 0 0 1-2 2h-5v-6H10v6H5a2 2 0 0 1-2-2Z"/>
+            </svg>
+          </a>
+          <a class="tab active" data-od-id="tab-plan" href="questify-plan.html" aria-label="Tasks" aria-current="page">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+            </svg>
+          </a>
+          <a class="tab" data-od-id="tab-league" href="questify-rankings.html" aria-label="Ranks">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+              <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+              <path d="M4 22h16"/>
+              <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+              <path d="M14 14.66V17c0 .55.47.98.97 1.21 1.18.54 2.03 2.03 2.03 3.79"/>
+              <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
+            </svg>
+          </a>
+          <a class="tab" data-od-id="tab-profile" href="questify-account.html" aria-label="Profile">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="8" r="4"/>
+              <path d="M4 21v-1a7 7 0 0 1 14 0v1"/>
+            </svg>
+          </a>
+          <span class="nav-sep" aria-hidden="true"></span>
+          <a class="qfab" data-od-id="home-fab" href="questify-camera.html" aria-label="Qubi AI camera">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="5" y="11" width="14" height="10" rx="2"/>
+              <path d="M12 11V7"/>
+              <path d="M9 7h6"/>
+              <circle cx="12" cy="16" r="3"/>
+            </svg>
+          </a>
+        </div>
+      </nav>
+      <div class="sheet" data-od-id="plan-sheet" role="dialog" aria-label="Add custom habit">
+        <div class="grabber" aria-hidden="true"></div>
+        <div class="sheet-title">Add custom habit</div>
+        <div class="field">
+          <label for="hab-name">Habit name</label>
+          <input id="hab-name" type="text" placeholder="e.g. Stretch" data-od-id="hab-name">
+        </div>
+        <div class="field">
+          <label>Frequency</label>
+          <div class="pill-row">
+            <button class="mini-pill on" data-od-id="freq-daily">Daily</button>
+            <button class="mini-pill" data-od-id="freq-weekly">Weekly</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>AI reminder time</label>
+          <input id="hab-time" type="time" value="08:00" data-od-id="hab-time">
+        </div>
+        <div class="switch-row">
+          <span>Require photo proof</span>
+          <span class="switch" data-od-id="hab-proof" role="switch" aria-checked="true" aria-label="Require photo proof"></span>
+        </div>
+        <button class="sheet-btn" data-od-id="sheet-add">Add to my quests</button>
+      </div>
+    </div>
+  </div>
+  <p class="stage-label">Questify · Plan & Activities · Module 5 · 390 × 844</p>
+  <script>
+    (function(){
+      var pills = document.querySelectorAll('[data-od-id="plan-filters"] .filter-pill');
+      var rows = document.querySelectorAll('.db-row');
+      pills.forEach(function(p){
+        p.addEventListener('click',function(){
+          pills.forEach(function(x){x.classList.remove('on')}); p.classList.add('on');
+          var v = p.getAttribute('data-view');
+          rows.forEach(function(r){
+            r.hidden = r.getAttribute('data-view') !== v;
+          });
+        });
+      });
+      document.querySelectorAll('.switch').forEach(function(s){
+        s.addEventListener('click',function(){
+          s.classList.toggle('off');
+          s.setAttribute('aria-checked', !s.classList.contains('off'));
+        });
+      });
+      document.querySelectorAll('[data-od-id="plan-filters"] .filter-pill').forEach(function(p){
+        p.addEventListener('click',function(){
+          document.querySelectorAll('[data-od-id="plan-filters"] .filter-pill').forEach(function(x){x.classList.remove('on')});
+          p.classList.add('on');
+        });
+      });
+      var sheet = document.querySelector('[data-od-id="plan-sheet"]');
+      document.querySelector('[data-od-id="plan-add"]').addEventListener('click',function(){sheet.classList.add('open')});
+      document.querySelector('[data-od-id="sheet-add"]').addEventListener('click',function(){sheet.classList.remove('open')});
+      var fD = document.querySelector('[data-od-id="freq-daily"]');
+      var fW = document.querySelector('[data-od-id="freq-weekly"]');
+      fD.addEventListener('click',function(){fD.classList.add('on');fW.classList.remove('on')});
+      fW.addEventListener('click',function(){fW.classList.add('on');fD.classList.remove('on')});
+    })();
+  </script>
+</body>
+</html>

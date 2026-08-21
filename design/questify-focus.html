@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Questify — Primary Habit Focus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --coral:#FF6B35;
+    --coral-deep:#E2551F;
+    --peach:#F2F2F3;
+    --canvas:#FAFAFA;
+    --ink:#1A1B1E;
+    --muted:#6B7280;
+    --card-border:#E7E7E8;
+    --white:#FFFFFF;
+    --display:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:var(--display);
+    background:#ECECED;
+    min-height:100vh;
+    display:grid;
+    place-items:center;
+    gap:18px;
+    padding:24px;
+  }
+  .stage-label{
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:#6B7280;
+    text-align:center;
+    margin-top:-8px;
+  }
+  .phone{
+    width:390px;
+    height:844px;
+    background:#1A1A1B;
+    border-radius:54px;
+    padding:10px;
+    box-shadow:0 34px 70px rgba(26,27,30,.28),0 6px 16px rgba(26,27,30,.10);
+    position:relative;
+  }
+  .screen{
+    width:100%;
+    height:100%;
+    border-radius:46px;
+    overflow:hidden;
+    background:var(--canvas);
+    display:flex;
+    flex-direction:column;
+    position:relative;
+  }
+  .island{
+    position:absolute;
+    top:20px;
+    left:50%;
+    transform:translateX(-50%);
+    width:126px;
+    height:34px;
+    background:#000;
+    border-radius:20px;
+    z-index:6;
+  }
+  .statusbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 28px 0;
+    color:var(--ink);
+    z-index:5;
+  }
+  .statusbar .time{font-size:15px;font-weight:700;letter-spacing:.02em}
+  .status-icons{display:flex;align-items:center;gap:6px}
+  .status-icons svg{display:block}
+  .topnav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 20px 0;
+  }
+  .back-btn{
+    width:44px;
+    height:44px;
+    border-radius:14px;
+    border:1px solid var(--card-border);
+    background:var(--white);
+    display:grid;
+    place-items:center;
+    cursor:pointer;
+    color:var(--ink);
+    text-decoration:none;
+    transition:transform .15s ease,background .15s ease;
+  }
+  .back-btn:hover{background:#FFFFFF}
+  .back-btn:active{transform:scale(.95)}
+  .step-badge{
+    height:34px;
+    padding:0 14px;
+    border-radius:999px;
+    background:rgba(26,27,30,.05);
+    color:var(--ink);
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:.02em;
+    display:flex;
+    align-items:center;
+  }
+  .progress-wrap{
+    padding:16px 20px 0;
+  }
+  .progress-track{
+    height:6px;
+    border-radius:999px;
+    background:var(--card-border);
+    overflow:hidden;
+  }
+  .progress-fill{
+    display:block;
+    height:100%;
+    width:17%;
+    border-radius:999px;
+    background:var(--coral);
+    animation:grow 1.1s cubic-bezier(.22,1.2,.36,1) .15s both;
+    transform-origin:left;
+  }
+  @keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  .focus-body{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    padding:24px 24px 24px;
+    overflow:hidden;
+  }
+  .mascot-mini{width:52px;height:52px;margin-bottom:12px}
+  .focus-title{
+    font-size:26px;
+    font-weight:800;
+    letter-spacing:-.02em;
+    color:var(--ink);
+    line-height:1.2;
+    margin-bottom:8px;
+  }
+  .focus-sub{
+    font-size:15px;
+    font-weight:500;
+    color:var(--muted);
+    line-height:1.5;
+    margin-bottom:24px;
+  }
+  .focus-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+  .focus-card{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    min-height:120px;
+    background:var(--white);
+    border:2px solid var(--card-border);
+    border-radius:18px;
+    cursor:pointer;
+    font-family:var(--display);
+    text-align:center;
+    padding:16px 12px;
+    transition:border-color .15s ease,background .15s ease,transform .15s ease;
+  }
+  .focus-card:hover{border-color:#D8D8DA}
+  .focus-card:active{transform:scale(.97)}
+  .focus-card .card-check{
+    position:absolute;
+    top:10px;
+    right:10px;
+    width:24px;
+    height:24px;
+    border-radius:50%;
+    border:2px solid var(--card-border);
+    background:var(--white);
+    color:var(--white);
+    display:grid;
+    place-items:center;
+    opacity:0;
+    transition:opacity .15s ease,background .15s ease,border-color .15s ease;
+  }
+  .focus-card.selected{
+    border-color:var(--coral);
+    background:#FFFFFF;
+  }
+  .focus-card.selected .card-check{
+    opacity:1;
+    background:var(--coral);
+    border-color:var(--coral);
+  }
+  .focus-card.selected .card-label{color:var(--coral-deep)}
+  .focus-card.selected .card-icon{
+    background:rgba(26,27,30,.05);
+    color:var(--coral-deep);
+  }
+  .focus-card .card-icon{
+    width:48px;
+    height:48px;
+    border-radius:16px;
+    background:rgba(26,27,30,.05);
+    color:var(--coral);
+    display:grid;
+    place-items:center;
+    transition:background .15s ease,color .15s ease;
+  }
+  .focus-card .card-icon svg{display:block}
+  .card-label{
+    font-size:14px;
+    font-weight:700;
+    color:var(--ink);
+    line-height:1.25;
+  }
+  .focus-card.wide{
+    grid-column:1/-1;
+    flex-direction:row;
+    justify-content:flex-start;
+    gap:16px;
+    padding:16px 20px;
+    min-height:72px;
+    text-align:left;
+  }
+  .continue-btn{
+    width:100%;
+    height:52px;
+    border:0;
+    border-radius:999px;
+    background:var(--coral);
+    color:var(--white);
+    font-family:var(--display);
+    font-size:17px;
+    font-weight:700;
+    letter-spacing:.01em;
+    cursor:pointer;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 4px 0 var(--coral-deep);
+    transition:transform .15s ease,box-shadow .15s ease,opacity .15s ease,background .15s ease;
+    margin-top:24px;
+  }
+  .continue-btn:hover{filter:brightness(1.03)}
+  .continue-btn:active{
+    transform:translateY(3px);
+    box-shadow:0 1px 0 var(--coral-deep);
+  }
+  .continue-btn.disabled{
+    background:#D9D4CB;
+    box-shadow:0 4px 0 #C4BEB4;
+    pointer-events:none;
+    opacity:.85;
+  }
+</style>
+</head>
+<body>
+  <div class="phone" data-od-id="focus-screen">
+    <div class="screen">
+      <div class="island"></div>
+      <div class="statusbar" data-od-id="focus-status">
+        <span class="time">9:41</span>
+        <span class="status-icons" aria-hidden="true">
+          <svg width="18" height="12" viewBox="0 0 18 12" fill="none">
+            <rect x="0" y="8" width="3" height="4" rx="1" fill="currentColor"/>
+            <rect x="5" y="5" width="3" height="7" rx="1" fill="currentColor"/>
+            <rect x="10" y="2" width="3" height="10" rx="1" fill="currentColor"/>
+            <rect x="15" y="0" width="3" height="12" rx="1" fill="currentColor" opacity=".35"/>
+          </svg>
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
+            <rect x="0" y="6" width="10" height="6" rx="2" fill="currentColor"/>
+            <path d="M12 3.5a5 5 0 0 1 0 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            <path d="M14 1a9 9 0 0 1 0 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          <svg width="26" height="12" viewBox="0 0 26 12" fill="none">
+            <rect x="0" y="1" width="22" height="10" rx="3" fill="currentColor"/>
+            <path d="M24 4v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            <rect x="2" y="3" width="16" height="6" rx="1.5" fill="var(--coral)"/>
+          </svg>
+        </span>
+      </div>
+      <div class="topnav">
+        <a class="back-btn" data-od-id="focus-back" href="questify-identity.html" aria-label="Back to identity">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <span class="step-badge" data-od-id="focus-badge">Step 3 of 18</span>
+      </div>
+      <div class="progress-wrap" data-od-id="focus-progress">
+        <div class="progress-track"><span class="progress-fill"></span></div>
+      </div>
+      <div class="focus-body">
+        <svg class="mascot-mini" data-od-id="focus-mascot" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Questie the Questify mascot">
+          <path d="M60 4 L74 26 Q60 36 46 26 Z" fill="#F4A261"/>
+          <path d="M60 10 L68 24 Q60 29 52 24 Z" fill="#E76F51"/>
+          <circle cx="60" cy="64" r="46" fill="#FFFFFF" stroke="#E7E7E8" stroke-width="2"/>
+          <circle cx="48" cy="62" r="5" fill="#1A1B1E"/>
+          <circle cx="72" cy="62" r="5" fill="#1A1B1E"/>
+          <path d="M50 72 Q60 81 70 72" stroke="#1A1B1E" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+          <circle cx="38" cy="70" r="6" fill="#E76F51" opacity=".25"/>
+          <circle cx="82" cy="70" r="6" fill="#E76F51" opacity=".25"/>
+        </svg>
+        <h1 class="focus-title" data-od-id="focus-title">What's the one habit you want to make unmissable?</h1>
+        <p class="focus-sub" data-od-id="focus-subtitle">Pick one focus — you can add more quests later.</p>
+        <div class="focus-grid" data-od-id="focus-grid">
+          <button class="focus-card" data-od-id="focus-card-health" type="button" aria-pressed="false">
+            <span class="card-icon" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6.5 6.5v11M17.5 6.5v11M3.5 9.5v5M20.5 9.5v5M6.5 12h11"/>
+              </svg>
+            </span>
+            <span class="card-label">Physical Health</span>
+            <span class="card-check" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 12l5 5L20 6"/>
+              </svg>
+            </span>
+          </button>
+          <button class="focus-card" data-od-id="focus-card-deepwork" type="button" aria-pressed="false">
+            <span class="card-icon" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M13 2 4.6 13.4h5.7L9.7 22l8.7-11.6h-5.7L13 2Z"/>
+              </svg>
+            </span>
+            <span class="card-label">Deep Work</span>
+            <span class="card-check" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 12l5 5L20 6"/>
+              </svg>
+            </span>
+          </button>
+          <button class="focus-card" data-od-id="focus-card-reading" type="button" aria-pressed="false">
+            <span class="card-icon" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 6.5C10.5 5 8.2 4.5 5.5 4.5c-.3 0-.5 0-.5.5v13c0 .3.2.5.5.5 2.7 0 5 .5 6.5 2 1.5-1.5 3.8-2 6.5-2 .3 0 .5-.2.5-.5V5c0-.5-.2-.5-.5-.5-2.7 0-5 .5-6.5 2Z"/>
+                <path d="M12 6.5v13.5"/>
+              </svg>
+            </span>
+            <span class="card-label">Reading &amp; Learning</span>
+            <span class="card-check" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 12l5 5L20 6"/>
+              </svg>
+            </span>
+          </button>
+          <button class="focus-card" data-od-id="focus-card-mindfulness" type="button" aria-pressed="false">
+            <span class="card-icon" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20.5c-2.6 0-4.9-1.4-6.2-3.7 2.2.2 4.5 1 5.8 2.3 1.3-1.3 3.6-2.1 5.8-2.3-1.3 2.3-3.6 3.7-5.4 3.7Z"/>
+                <path d="M12 13.6c-1.7-1.4-3.1-3.6-3.7-6.4 1.7.4 3.2 1.3 3.7 2.6.5-1.3 2-2.2 3.7-2.6-.6 2.8-2 5-3.7 6.4Z"/>
+              </svg>
+            </span>
+            <span class="card-label">Mindfulness</span>
+            <span class="card-check" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 12l5 5L20 6"/>
+              </svg>
+            </span>
+          </button>
+          <button class="focus-card wide" data-od-id="focus-card-chores" type="button" aria-pressed="false">
+            <span class="card-icon" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3.5 10.5 12 3.8l8.5 6.7"/>
+                <path d="M5.5 9.2V20h13V9.2"/>
+                <path d="M10 20v-5.2h4V20"/>
+                <path d="M16.8 3.6l.7 1.6 1.6.7-1.6.7-.7 1.6-.7-1.6-1.6-.7 1.6-.7.7-1.6Z"/>
+              </svg>
+            </span>
+            <span class="card-label">Home Chores</span>
+            <span class="card-check" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 12l5 5L20 6"/>
+              </svg>
+            </span>
+          </button>
+        </div>
+        <a class="continue-btn disabled" data-od-id="focus-continue" href="questify-age.html" aria-disabled="true">Continue ➔</a>
+      </div>
+    </div>
+  </div>
+  <p class="stage-label">Questify · Primary Habit Focus · Step 3 of 18 · 390 × 844</p>
+  <script>
+    (function(){
+      var cards = document.querySelectorAll('.focus-card');
+      var cont = document.querySelector('.continue-btn');
+      cards.forEach(function(card){
+        card.addEventListener('click', function(){
+          var wasSelected = card.classList.contains('selected');
+          cards.forEach(function(c){
+            c.classList.remove('selected');
+            c.setAttribute('aria-pressed','false');
+          });
+          if(!wasSelected){
+            card.classList.add('selected');
+            card.setAttribute('aria-pressed','true');
+          }
+          var any = document.querySelector('.focus-card.selected');
+          cont.classList.toggle('disabled', !any);
+          cont.setAttribute('aria-disabled', any ? 'false' : 'true');
+        });
+      });
+      cont.addEventListener('click', function(){
+        if(!cont.classList.contains('disabled')) location.href = 'questify-age.html';
+      });
+    })();
+  </script>
+</body>
+</html>
